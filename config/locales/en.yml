@@ -2195,8 +2195,8 @@ en:
     contrast: Mastodon (High contrast)
     default: Mastodon (Dark)
     full-dark: フルダーク
-    mastodon-bird-dark: Mastodon Bird (Dark)
-    mastodon-bird-light: Mastodon Bird (Light)
+    bird-dark: Mastodon Bird (Dark)
+    bird-light: Mastodon Bird (Light)
     mastodon-light: Mastodon (Light)
     modern-dark: Modern Dark
     modern-light: Modern Light
