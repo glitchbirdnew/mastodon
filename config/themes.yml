@@ -1,6 +1,8 @@
 default: styles/application.scss
 contrast: styles/contrast.scss
 mastodon-light: styles/mastodon-light.scss
+modern-dark: styles/modern-dark.scss
+modern-light: styles/modern-light.scss
 full-dark: styles/full-dark.scss
 tangerine: styles/tangerineui.scss
 tangerine-purple: styles/tangerineui-purple.scss
