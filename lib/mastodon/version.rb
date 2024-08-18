@@ -75,7 +75,7 @@ module Mastodon
     end
 
     def gem_version
-      @gem_version ||= if ENV.fetch('UPDATE_CHECK_SOURCE', 'kmyblue') == 'kmyblue'
+      @gem_version ||= if ENV.fetch('UPDATE_CHECK_SOURCE', 'kmyblue') == 'bar'
                          Gem::Version.new("#{kmyblue_major}.#{kmyblue_minor}")
                        else
                          Gem::Version.new(to_s.split('+')[0])
@@ -91,7 +91,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'kmycode/mastodon')
+      ENV.fetch('GITHUB_REPOSITORY', 'mastodon/mastodon')
     end
 
     def source_base_url
