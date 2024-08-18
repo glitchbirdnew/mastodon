@@ -56,7 +56,7 @@ module Mastodon
     end
 
     def build_metadata
-      ['kmyblue', to_s_of_kmyblue, build_metadata_of_mastodon].compact.join('.')
+      ['bar', to_s_of_kmyblue, build_metadata_of_mastodon].compact.join('.')
     end
 
     def build_metadata_of_mastodon
@@ -75,7 +75,7 @@ module Mastodon
     end
 
     def gem_version
-      @gem_version ||= if ENV.fetch('UPDATE_CHECK_SOURCE', 'kmyblue') == 'bar'
+      @gem_version ||= if ENV.fetch('UPDATE_CHECK_SOURCE', 'kmyblue') == 'kmyblue'
                          Gem::Version.new("#{kmyblue_major}.#{kmyblue_minor}")
                        else
                          Gem::Version.new(to_s.split('+')[0])
