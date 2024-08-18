@@ -3,5 +3,5 @@ contrast: styles/contrast.scss
 mastodon-light: styles/mastodon-light.scss
 modern-dark: styles/modern-dark.scss
 modern-light: styles/modern-light.scss
-elephant: styles/bird.scss
+bird: styles/bird.scss
 full-dark: styles/full-dark.scss
