@@ -229,7 +229,7 @@ class About extends PureComponent {
           </Section>
 
           <Section title={intl.formatMessage(messages.capabilities)}>
-            <p><FormattedMessage id='about.kmyblue_capability' defaultMessage='This server is using kmyblue, a fork of Mastodon. On this server, kmyblues unique features are configured as follows.' /></p>
+            <p><FormattedMessage id='about.kmyblue_capability' defaultMessage='Server unique features are configured as follows.' /></p>
             {!isLoading && (
               <ol className='rules-list'>
                 <li>

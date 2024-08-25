@@ -2197,6 +2197,10 @@ en:
     default: Mastodon (Dark)
     full-dark: フルダーク
     mastodon-light: Mastodon (Light)
+    modern-dark: Modern Dark
+    modern-light: Modern Light
+    tangerine: "Tangerine (orange, Twitter-like)"
+    tangerine-purple: "Tangerine (purple, Twitter-like)"
     system: Automatic (use system theme)
   time:
     formats:
