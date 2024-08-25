@@ -1,5 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
+import { Link } from 'react-router-dom';
+
 import EmojiReactionIcon from '@/material-icons/400-24px/mood.svg?react';
 import type { NotificationGroupEmojiReaction } from 'mastodon/models/notification_group';
 import { useAppSelector } from 'mastodon/store';
@@ -7,13 +9,29 @@ import { useAppSelector } from 'mastodon/store';
 import type { LabelRenderer } from './notification_group_with_status';
 import { NotificationGroupWithStatus } from './notification_group_with_status';
 
-const labelRenderer: LabelRenderer = (values) => (
-  <FormattedMessage
-    id='notification.emoji_reaction'
-    defaultMessage='{name} reacted your status with emoji'
-    values={values}
-  />
-);
+const labelRenderer: LabelRenderer = (displayedName, total, seeMoreHref) => {
+  if (total === 1)
+    return (
+      <FormattedMessage
+        id='notification.emoji_reaction'
+        defaultMessage='{name} reacted your status with emoji'
+        values={{ name: displayedName }}
+      />
+    );
+
+  return (
+    <FormattedMessage
+      id='notification.emoji_reaction.name_and_others_with_link'
+      defaultMessage='{name} and <a>{count, plural, one {# other} other {# others}}</a> reacted your post with emoji'
+      values={{
+        name: displayedName,
+        count: total - 1,
+        a: (chunks) =>
+          seeMoreHref ? <Link to={seeMoreHref}>{chunks}</Link> : chunks,
+      }}
+    />
+  );
+};
 
 export const NotificationEmojiReaction: React.FC<{
   notification: NotificationGroupEmojiReaction;

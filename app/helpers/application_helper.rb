@@ -107,19 +107,12 @@ module ApplicationHelper
     policy(record).public_send(:"#{action}?")
   end
 
-  def fa_icon(icon, attributes = {})
-    class_names = attributes[:class]&.split || []
-    class_names << 'fa'
-    class_names += icon.split.map { |cl| "fa-#{cl}" }
-
-    content_tag(:i, nil, attributes.merge(class: class_names.join(' ')))
-  end
-
   def material_symbol(icon, attributes = {})
     inline_svg_tag(
       "400-24px/#{icon}.svg",
       class: ['icon', "material-#{icon}"].concat(attributes[:class].to_s.split),
-      role: :img
+      role: :img,
+      data: attributes[:data]
     )
   end
 
@@ -171,6 +164,7 @@ module ApplicationHelper
     output << 'system-font' if current_account&.user&.setting_system_font_ui
     output << (current_account&.user&.setting_reduce_motion ? 'reduce-motion' : 'no-reduce-motion')
     output << 'rtl' if locale_direction == 'rtl'
+    output << "content-font-size__#{current_account&.user&.setting_content_font_size}"
     output.compact_blank.join(' ')
   end
 
@@ -256,22 +250,6 @@ module ApplicationHelper
 
   def mascot_url
     full_asset_url(instance_presenter.mascot&.file&.url || frontend_asset_path('images/elephant_ui_plane.svg'))
-  end
-
-  def instance_presenter
-    @instance_presenter ||= InstancePresenter.new
-  end
-
-  def favicon_path(size = '48')
-    instance_presenter.favicon&.file&.url(size)
-  end
-
-  def app_icon_path(size = '48')
-    instance_presenter.app_icon&.file&.url(size)
-  end
-
-  def use_mask_icon?
-    instance_presenter.app_icon.blank?
   end
 
   private

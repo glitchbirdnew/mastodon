@@ -7,4 +7,4 @@
     .label_input__wrapper= f.check_box :strangers, { multiple: true, checked: ng_word.stranger }, temporary_id, nil
   %td
     = hidden_field_tag :'form_admin_settings[ng_words_test][temporary_ids][]', temporary_id, class: 'temporary_id'
-    = link_to safe_join([fa_icon('times'), t('filters.index.delete')]), '#', class: 'table-action-link delete-row-button'
+    = link_to safe_join([material_symbol('close'), t('filters.index.delete')]), '#', class: 'table-action-link delete-row-button'

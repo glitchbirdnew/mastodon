@@ -107,5 +107,5 @@
         = render partial: 'account', collection: @accounts, locals: { f: f }
 
 %nav.pagination
-  = link_to_previous_page @accounts, safe_join([fa_icon('chevron-left'), t('pagination.prev')], ' '), rel: 'prev'
-  = link_to_next_page @accounts, safe_join([t('pagination.next'), fa_icon('chevron-right')], ' '), rel: 'next'
+  = link_to_previous_page @accounts, safe_join([material_symbol('chevron_left'), t('pagination.prev')], ' '), rel: 'prev'
+  = link_to_next_page @accounts, safe_join([t('pagination.next'), material_symbol('chevron_right')], ' '), rel: 'next'

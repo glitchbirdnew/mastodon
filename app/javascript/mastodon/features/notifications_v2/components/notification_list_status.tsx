@@ -11,10 +11,12 @@ import { NotificationWithStatus } from './notification_with_status';
 const createLabelRenderer = (
   notification: NotificationGroupListStatus,
 ): LabelRenderer => {
-  const renderer: LabelRenderer = (values) => {
+  const renderer: LabelRenderer = (displayedName) => {
     const list = notification.list;
+    let listHref: JSX.Element | undefined;
+
     if (list) {
-      const listLink = (
+      listHref = (
         <bdi>
           <Link
             className='notification__display-name'
@@ -26,14 +28,13 @@ const createLabelRenderer = (
           </Link>
         </bdi>
       );
-      values.listName = listLink;
     }
 
     return (
       <FormattedMessage
         id='notification.list_status'
         defaultMessage='{name} post is added to {listName}'
-        values={values}
+        values={{ name: displayedName, listName: listHref }}
       />
     );
   };

@@ -10,6 +10,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
 import { AnimatedNumber } from 'mastodon/components/animated_number';
+import { ContentWarning } from 'mastodon/components/content_warning';
 import EditedTimestamp from 'mastodon/components/edited_timestamp';
 import { getHashtagBarForStatus } from 'mastodon/components/hashtag_bar';
 import { Icon }  from 'mastodon/components/icon';
@@ -144,7 +145,6 @@ class DetailedStatus extends ImmutablePureComponent {
     }
 
     let media           = '';
-    let isCardMediaWithSensitive = false;
     let applicationLink = '';
     let reblogLink = '';
     let favouriteLink = '';
@@ -218,7 +218,6 @@ class DetailedStatus extends ImmutablePureComponent {
       }
     } else if (status.get('card')) {
       media = <Card sensitive={status.get('sensitive') && !status.get('spoiler_text')} onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
-      isCardMediaWithSensitive = status.get('spoiler_text').length > 0;
     }
 
     let emojiReactionsBar = null;
@@ -338,19 +337,21 @@ class DetailedStatus extends ImmutablePureComponent {
             <DisplayName account={status.get('account')} localDomain={this.props.domain} />
           </a>
 
-          <StatusContent
-            status={status}
-            expanded={!status.get('hidden')}
-            onExpandedToggle={this.handleExpandedToggle}
-            onTranslate={this.handleTranslate}
-            {...statusContentProps}
-          />
+          {status.get('spoiler_text').length > 0 && <ContentWarning text={status.getIn(['translation', 'spoilerHtml']) || status.get('spoilerHtml')} expanded={expanded} onClick={this.handleExpandedToggle} />}
 
-          {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
+          {expanded && (
+            <>
+              <StatusContent
+                status={status}
+                onTranslate={this.handleTranslate}
+                {...statusContentProps}
+              />
 
-          {(!status.get('spoiler_text') || expanded) && hashtagBar}
-
-          {emojiReactionsBar}
+              {media}
+              {hashtagBar}
+              {emojiReactionsBar}
+            </>
+          )}
 
           <div className='detailed-status__meta'>
             <div className='detailed-status__meta__line'>

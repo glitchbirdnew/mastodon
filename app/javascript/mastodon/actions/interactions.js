@@ -746,12 +746,12 @@ export function expandMentionedUsersFail(id, error) {
   };
 }
 
-function toggleReblogWithoutConfirmation(status, privacy) {
+function toggleReblogWithoutConfirmation(status, visibility) {
   return (dispatch) => {
     if (status.get('reblogged')) {
       dispatch(unreblog({ statusId: status.get('id') }));
     } else {
-      dispatch(reblog({ statusId: status.get('id'), privacy }));
+      dispatch(reblog({ statusId: status.get('id'), visibility }));
     }
   };
 }

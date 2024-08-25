@@ -13,6 +13,7 @@ import BundleColumnError from 'mastodon/features/ui/components/bundle_column_err
 import { isHideItem, me } from 'mastodon/initial_state';
 import { normalizeForLookup } from 'mastodon/reducers/accounts_map';
 import { getAccountHidden } from 'mastodon/selectors';
+import { useAppSelector } from 'mastodon/store';
 
 import {
   lookupAccount,
@@ -52,12 +53,22 @@ const mapStateToProps = (state, { params: { acct, id } }) => {
   };
 };
 
-const RemoteHint = ({ url }) => (
-  <TimelineHint url={url} resource={<FormattedMessage id='timeline_hint.resources.follows' defaultMessage='Follows' />} />
-);
+const RemoteHint = ({ accountId, url }) => {
+  const acct = useAppSelector(state => state.accounts.get(accountId)?.acct);
+  const domain = acct ? acct.split('@')[1] : undefined;
+
+  return (
+    <TimelineHint
+      url={url}
+      message={<FormattedMessage id='hints.profiles.follows_may_be_missing' defaultMessage='Follows for this profile may be missing.' />}
+      label={<FormattedMessage id='hints.profiles.see_more_follows' defaultMessage='See more follows on {domain}' values={{ domain: <strong>{domain}</strong> }} />}
+    />
+  );
+};
 
 RemoteHint.propTypes = {
   url: PropTypes.string.isRequired,
+  accountId: PropTypes.string.isRequired,
 };
 
 class Following extends ImmutablePureComponent {
@@ -132,7 +143,7 @@ class Following extends ImmutablePureComponent {
     let emptyMessage;
 
     const forceEmptyState = blockedBy || suspended || hidden;
-    const normalizedAccountIds = isHideItem('relationships') ? accountIds.filter((id) => id !== me) : accountIds;
+    const filteredAccountIds = isHideItem('relationships') ? accountIds.filter((id) => id !== me) : accountIds;
 
     if (suspended) {
       emptyMessage = <FormattedMessage id='empty_column.account_suspended' defaultMessage='Account suspended' />;
@@ -140,15 +151,15 @@ class Following extends ImmutablePureComponent {
       emptyMessage = <LimitedAccountHint accountId={accountId} />;
     } else if (blockedBy) {
       emptyMessage = <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />;
-    } else if (hideCollections && normalizedAccountIds.isEmpty()) {
+    } else if (hideCollections && filteredAccountIds.isEmpty()) {
       emptyMessage = <FormattedMessage id='empty_column.account_hides_collections' defaultMessage='This user has chosen to not make this information available' />;
-    } else if (remote && normalizedAccountIds.isEmpty()) {
-      emptyMessage = <RemoteHint url={remoteUrl} />;
+    } else if (remote && filteredAccountIds.isEmpty()) {
+      emptyMessage = <RemoteHint accountId={accountId} url={remoteUrl} />;
     } else {
       emptyMessage = <FormattedMessage id='account.follows.empty' defaultMessage="This user doesn't follow anyone yet." />;
     }
 
-    const remoteMessage = remote ? <RemoteHint url={remoteUrl} /> : null;
+    const remoteMessage = remote ? <RemoteHint accountId={accountId} url={remoteUrl} /> : null;
 
     return (
       <Column>
@@ -165,7 +176,7 @@ class Following extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}
         >
-          {forceEmptyState ? [] : normalizedAccountIds.map(id =>
+          {forceEmptyState ? [] : filteredAccountIds.map(id =>
             <AccountContainer key={id} id={id} withNote={false} />,
           )}
         </ScrollableList>

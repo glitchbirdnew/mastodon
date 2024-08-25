@@ -81,6 +81,21 @@ export const NOTIFICATIONS_FOR_REQUEST_EXPAND_REQUEST = 'NOTIFICATIONS_FOR_REQUE
 export const NOTIFICATIONS_FOR_REQUEST_EXPAND_SUCCESS = 'NOTIFICATIONS_FOR_REQUEST_EXPAND_SUCCESS';
 export const NOTIFICATIONS_FOR_REQUEST_EXPAND_FAIL    = 'NOTIFICATIONS_FOR_REQUEST_EXPAND_FAIL';
 
+const DEFAULT_NOTIFICATION_MESSAGES = {
+  'notification.admin.report': '{name} reported {target}',
+  'notification.admin.sign_up': '{name} signed up',
+  'notification.emoji_reaction': '{name} reacted your post with emoji',
+  'notification.favourite': '{name} favorited your post',
+  'notification.follow': '{name} followed you',
+  'notification.list_status': '{name} post is added to {listName}',
+  'notification.mention': 'Mention',
+  'notification.poll': 'A poll you voted in has ended',
+  'notification.reblog': '{name} boosted your post',
+  'notification.status': '{name} just posted',
+  'notification.status_reference': '{name} quoted your post',
+  'notification.update': '{name} edited a post',
+};
+
 defineMessages({
   mention: { id: 'notification.mention', defaultMessage: '{name} mentioned you' },
   group: { id: 'notifications.group', defaultMessage: '{count} notifications' },
@@ -161,7 +176,11 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
 
     // Desktop notifications
     if (typeof window.Notification !== 'undefined' && showAlert && !filtered) {
-      const title = new IntlMessageFormat(intlMessages[`notification.${notification.type}`], intlLocale).format({ name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
+      const messageTemplate = intlMessages[`notification.${notification.type}`] || DEFAULT_NOTIFICATION_MESSAGES[`notification.${notification.type}`];
+      const title = new IntlMessageFormat(messageTemplate, intlLocale).format({
+        name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username,
+        listName: notification.list && notification.list.title,
+      });
       const body  = (notification.status && notification.status.spoiler_text.length > 0) ? notification.status.spoiler_text : unescapeHTML(notification.status ? notification.status.content : '');
 
       const notify = new Notification(title, { body, icon: notification.account.avatar, tag: notification.id });
@@ -200,8 +219,8 @@ const noOp = () => {};
 
 let expandNotificationsController = new AbortController();
 
-export function expandNotifications({ maxId, forceLoad = false } = {}, done = noOp) {
-  return (dispatch, getState) => {
+export function expandNotifications({ maxId = undefined, forceLoad = false }) {
+  return async (dispatch, getState) => {
     const activeFilter = getState().getIn(['settings', 'notifications', 'quickFilter', 'active']);
     const notifications = getState().get('notifications');
     const isLoadingMore = !!maxId;
@@ -211,7 +230,6 @@ export function expandNotifications({ maxId, forceLoad = false } = {}, done = no
         expandNotificationsController.abort();
         expandNotificationsController = new AbortController();
       } else {
-        done();
         return;
       }
     }
@@ -243,7 +261,8 @@ export function expandNotifications({ maxId, forceLoad = false } = {}, done = no
 
     dispatch(expandNotificationsRequest(isLoadingMore));
 
-    api().get('/api/v1/notifications', { params, signal: expandNotificationsController.signal }).then(response => {
+    try {
+      const response = await api().get('/api/v1/notifications', { params, signal: expandNotificationsController.signal });
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data.map(item => item.account)));
@@ -253,11 +272,9 @@ export function expandNotifications({ maxId, forceLoad = false } = {}, done = no
       dispatch(expandNotificationsSuccess(response.data, next ? next.uri : null, isLoadingMore, isLoadingRecent, isLoadingRecent && preferPendingItems));
       fetchRelatedRelationships(dispatch, response.data);
       dispatch(submitMarkers());
-    }).catch(error => {
+    } catch(error) {
       dispatch(expandNotificationsFail(error, isLoadingMore));
-    }).finally(() => {
-      done();
-    });
+    }
   };
 }
 

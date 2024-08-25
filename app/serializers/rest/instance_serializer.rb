@@ -7,13 +7,14 @@ class REST::InstanceSerializer < ActiveModel::Serializer
     has_one :account, serializer: REST::AccountSerializer
   end
 
+  include InstanceHelper
   include RoutingHelper
   include KmyblueCapabilitiesHelper
   include RegistrationLimitationHelper
 
   attributes :domain, :title, :version, :source_url, :description,
-             :usage, :thumbnail, :languages, :configuration,
-             :registrations, :fedibird_capabilities
+             :usage, :thumbnail, :icon, :languages, :configuration,
+             :registrations, :fedibird_capabilities, :api_versions
 
   has_one :contact, serializer: ContactSerializer
   has_many :rules, serializer: REST::RuleSerializer
@@ -31,6 +32,18 @@ class REST::InstanceSerializer < ActiveModel::Serializer
     else
       {
         url: frontend_asset_url('images/preview.png'),
+      }
+    end
+  end
+
+  def icon
+    SiteUpload::ANDROID_ICON_SIZES.map do |size|
+      src = app_icon_path(size.to_i)
+      src = URI.join(root_url, src).to_s if src.present?
+
+      {
+        src: src || frontend_asset_url("icons/android-chrome-#{size}x#{size}.png"),
+        size: "#{size}x#{size}",
       }
     end
   end
@@ -116,6 +129,13 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       limit_reached: Setting.registrations_mode != 'none' && reach_registrations_limit?,
       message: registrations_enabled? ? nil : registrations_message,
       url: ENV.fetch('SSO_ACCOUNT_SIGN_UP', nil),
+    }
+  end
+
+  def api_versions
+    {
+      mastodon: 1,
+      kmyblue: KMYBLUE_API_VERSION,
     }
   end
 

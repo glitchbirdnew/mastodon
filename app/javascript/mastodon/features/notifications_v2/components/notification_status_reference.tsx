@@ -6,11 +6,11 @@ import type { NotificationGroupStatusReference } from 'mastodon/models/notificat
 import type { LabelRenderer } from './notification_group_with_status';
 import { NotificationWithStatus } from './notification_with_status';
 
-const labelRenderer: LabelRenderer = (values) => (
+const labelRenderer: LabelRenderer = (displayedName) => (
   <FormattedMessage
     id='notification.status_reference'
     defaultMessage='{name} quoted your post'
-    values={values}
+    values={{ name: displayedName }}
   />
 );
 

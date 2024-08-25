@@ -10,16 +10,16 @@
     .fields-group
       - if @friend.accepted?
         %span.positive-hint
-          = fa_icon('check')
+          = material_symbol('check')
           &nbsp;
           = t 'admin.friend_servers.enabled'
       - elsif @friend.pending?
-        = fa_icon('hourglass')
+        = material_symbol('hourglass')
         &nbsp;
         = t 'admin.friend_servers.pending'
       - else
         %span.negative-hint
-          = fa_icon('times')
+          = material_symbol('close')
           &nbsp;
           = t 'admin.friend_servers.disabled'
       .action-buttons

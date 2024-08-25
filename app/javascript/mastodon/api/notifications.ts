@@ -19,6 +19,7 @@ const exceptInvalidNotifications = (
 export const apiFetchNotifications = async (params?: {
   exclude_types?: string[];
   max_id?: string;
+  since_id?: string;
 }) => {
   const response = await api().request<ApiNotificationGroupsResultJSON>({
     method: 'GET',
