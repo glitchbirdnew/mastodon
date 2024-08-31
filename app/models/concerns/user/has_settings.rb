@@ -283,6 +283,10 @@ module User::HasSettings
     settings['web.hide_favourite_menu']
   end
 
+  def setting_use_custom_css
+    settings['web.use_custom_css']
+  end
+
   def allows_report_emails?
     settings['notification_emails.report']
   end
