@@ -66,22 +66,22 @@ en:
         setting_custom_css_lead: 'Be sure to remember: In the unlikely event that you make a mistake in entering your custom CSS and the screen does not display properly, you can disable your custom CSS from the link at the bottom of the sign-in screen. Open the sign-in screen in private mode of your browser, for example, and disable it.'
         setting_default_searchability: On kmyblue and Fedibird, the search is based on the search permission setting; on Misskey, all public, local public, and non-public posts are searched regardless of this setting; on Mastodon and Firefish, instead of search permission, the "Make public posts freely searchable on other servers" setting in the profile settings is applied. In Mastodon and Firefish, the "Make public posts freely searchable on other servers" setting in the profile settings is applied instead of the search permission.
         setting_default_sensitive: Sensitive media is hidden by default and can be revealed with a click
-        setting_disallow_unlisted_public_searchability: この設定を有効にすると、非収載投稿と検索範囲「誰でも」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
+        setting_disallow_unlisted_public_searchability: If you enable this setting, unlisted posts and the "anyone" search scope cannot be used at the same time, and searches by an unspecified number of people will be impossible. This will be the same behavior as Fedibird.
         setting_display_media_default: Hide media marked as sensitive
         setting_display_media_hide_all: Always hide media
         setting_display_media_show_all: Always show media
         setting_dtl_force_searchability: 'With using #%{tag} tag, your post settings will be changed forcibly'
         setting_dtl_force_visibility: 'With using #%{tag} tag, your post settings will be changed forcibly'
         setting_emoji_reaction_policy: Even with this setting, users on non-kmyblue servers are free to put their emoji reaction on the post and share it within the same server. If you simply want to remove the emoji reaction from your own screen, you can disable it from the appearance settings
-        setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、絵文字リアクション機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
+        setting_emoji_reaction_streaming_notify_impl2: When using an app that supports the server's unique features, you can use the emoji reaction feature.
         setting_enable_emoji_reaction: If turn off, other users still can react your posts
         setting_enabled_visibilities: If turn off, you cannot select and post the privacy.
-        setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
-        setting_public_post_to_unlisted: 未対応のサードパーティアプリからもローカル公開で投稿できますが、公開投稿はWeb以外できなくなります
+        setting_hide_network: Prevent following and follower information from being visible on your profile page
+        setting_public_post_to_unlisted: You can still post locally from unsupported third-party apps, but public posting will no longer be possible outside of the web.
         setting_reject_send_limited_to_suspects: This applies to "Mutual Only" posts. Circle posts will be delivered without exception. Some Misskey servers have independently supported limited posting, but this is a setting for those who are concerned about it, as mutual-only posting exposes some of the users you are mutual with to Misskey users!
         setting_reject_unlisted_subscription: Misskey and its forks can **subscribe and search** for "non-following" posts from accounts they do not follow. This differs from kmyblue's behavior. It delivers posts in the specified public range to such servers as "followers only". Please understand, however, that due to its structure, it is difficult to handle perfectly and will occasionally be delivered as non-subscribed.
         setting_reverse_search_quote: Double-quotes will result in a search with a wider range of notation, which is the opposite of Mastodon's default behavior.
-        setting_show_application: 投稿するのに使用したアプリが投稿の詳細ビューに表示されるようになります
+        setting_show_application: The app you used to post will now be visible in the post's details view
         setting_stay_privacy: If you choose to enable this setting, please consider manually setting the visibility of the boost
         setting_stop_emoji_reaction_streaming: Helps to save communication capacity.
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
@@ -119,10 +119,10 @@ en:
         peers_api_enabled: A list of domain names this server has encountered in the fediverse. No data is included here about whether you federate with a given server, just that your server knows about it. This is used by services that collect statistics on federation in a general sense.
         profile_directory: The profile directory lists all users who have opted-in to be discoverable.
         receive_other_servers_emoji_reaction: It can cause load. It is recommended to enable it only when there are few people.
-        registrations_end_hour: 新規登録が承認なしで可能な時間帯の開始時間を指定します。これより前の時間に登録することはできません。終了時間より後にすることはできません。この時間帯から外れた新規登録には、別途承認が必要となります。
-        registrations_limit: 現在のユーザー数がこれを超過すると、管理者がこの数値を増やさない限り新規登録できません。0を指定すると、この制限を無効化します。
-        registrations_limit_per_day: 本日登録されたユーザー数がこれを超過すると、UTC時刻で翌日0時にならない限り新規登録できません。0を指定すると、この制限を無効化します。
-        registrations_start_hour: 新規登録が承認なしで可能な時間帯の終了時間を指定します。これより後の時間に登録することはできません。開始時間より前にすることはできません。この時間帯から外れた新規登録には、別途承認が必要となります。
+        registrations_end_hour: Specify the start time during which new registrations can be made without approval. Registrations cannot be made before this time. Registrations cannot be made after this time. New registrations outside this time period will require approval.
+        registrations_limit: If the current number of users exceeds this, new users will not be able to register unless an administrator increases this number. Specifying 0 will disable this limit.
+        registrations_limit_per_day: If the number of registered users today exceeds this limit, new registrations will not be possible until midnight UTC the following day. Specifying 0 will disable this limit.
+        registrations_start_hour: Specify the end time for when new registrations can be made without approval. Registrations cannot be made later than this time, and cannot be made earlier than the start time. New registrations outside this time period require additional approval.
         require_invite_text: When sign-ups require manual approval, make the “Why do you want to join?” text input mandatory rather than optional
         site_contact_email: How people can reach you for legal or support inquiries.
         site_contact_username: How people can reach you on Mastodon.
@@ -184,8 +184,8 @@ en:
         discoverable: Feature profile and posts in discovery algorithms
         fields:
           examples:
-            name_1: 例) GitHub
-            value_1: 例) https://github.com/xxxxxx
+            name_1: Example NA Social
+            value_1: https://na.social
           name: Label
           value: Content
         indexable: Include public posts in search results
