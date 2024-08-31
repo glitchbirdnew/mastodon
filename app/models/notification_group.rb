@@ -11,8 +11,11 @@ class NotificationGroup < ActiveModelSerializers::Model
     attributes :emoji_reaction, :sample_accounts
   end
 
-  def self.from_notification(notification, max_id: nil)
-    if notification.group_key.present?
+  def self.from_notification(notification, max_id: nil, grouped_types: nil)
+    grouped_types = grouped_types.presence&.map(&:to_sym) || Notification::GROUPABLE_NOTIFICATION_TYPES
+    groupable = notification.group_key.present? && grouped_types.include?(notification.type)
+
+    if groupable
       # TODO: caching, and, if caching, preloading
       scope = notification.account.notifications.where(group_key: notification.group_key)
       scope = scope.where(id: ..max_id) if max_id.present?
@@ -36,7 +39,7 @@ class NotificationGroup < ActiveModelSerializers::Model
 
     NotificationGroup.new(
       notification: notification,
-      group_key: notification.group_key || "ungrouped-#{notification.id}",
+      group_key: groupable ? notification.group_key : "ungrouped-#{notification.id}",
       sample_accounts: sample_accounts,
       emoji_reaction_groups: emoji_reaction_groups,
       list: list,

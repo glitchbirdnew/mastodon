@@ -36,6 +36,9 @@
 
     = stylesheet_link_tag custom_css_path, skip_pipeline: true, host: root_url, media: 'all'
 
+    - if user_custom_css?
+      = stylesheet_link_tag user_custom_css_path({ version: user_custom_css_version }), skip_pipeline: true, host: root_url, media: 'all'
+
     = yield :header_tags
 
   %body{ class: body_classes }
