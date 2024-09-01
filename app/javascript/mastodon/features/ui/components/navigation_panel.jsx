@@ -52,6 +52,7 @@ const messages = defineMessages({
   home: { id: 'tabs_bar.home', defaultMessage: 'Home' },
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   explore: { id: 'explore.title', defaultMessage: 'Explore' },
+  followed_tags: { id: 'navigation_bar.followed_tags', defaultMessage: 'Followed Hashtags' },
   local: { id: 'column.local', defaultMessage: 'Local' },
   deepLocal: { id: 'column.deep_local', defaultMessage: 'Deep' },
   firehose: { id: 'column.firehose', defaultMessage: 'Live feeds' },
