@@ -13,7 +13,7 @@ import BookmarksActiveIcon from '@/material-icons/400-24px/bookmarks-fill.svg?re
 import BookmarksIcon from '@/material-icons/400-24px/bookmarks.svg?react';
 import ExploreActiveIcon from '@/material-icons/400-24px/explore-fill.svg?react';
 import ExploreIcon from '@/material-icons/400-24px/explore.svg?react';
-import FollowedtagsIcon from '@/material-icons/400-24px/tag.svg?react';
+import HashtagIcon from '@/material-icons/400-24px/tag.svg?react';
 import ModerationIcon from '@/material-icons/400-24px/gavel.svg?react';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
 import HomeActiveIcon from '@/material-icons/400-24px/home-fill.svg?react';

@@ -14,7 +14,7 @@ import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?re
 import BookmarksIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
 import ExploreIcon from '@/material-icons/400-24px/explore.svg?react';
 import ModerationIcon from '@/material-icons/400-24px/gavel.svg?react';
-import FollowedtagsIcon from '@/material-icons/400-24px/tag.svg?react';
+import HashtagIcon from '@/material-icons/400-24px/tag.svg?react';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
@@ -146,6 +146,7 @@ class GettingStarted extends ImmutablePureComponent {
         <ColumnLink key='direct' icon='at' iconComponent={AlternateEmailIcon} text={intl.formatMessage(messages.direct)} to='/conversations' />,
         <ColumnLink key='bookmark' icon='bookmarks' iconComponent={BookmarksIcon} text={intl.formatMessage(messages.bookmarks)} to='/bookmark_categories' />,
         <ColumnLink key='favourites' icon='star' iconComponent={StarIcon} text={intl.formatMessage(messages.favourites)} to='/favourites' />,
+        <ColumnLink key='followed_tags' icon='tag' iconComponent={followed_tagsIcon} text={intl.formatMessage(messages.followed_tags)} to='/followed_tags' />,
         <ColumnLink key='lists' icon='list-ul' iconComponent={ListAltIcon} text={intl.formatMessage(messages.lists)} to='/lists' />,
         <ColumnLink key='antennas' icon='wifi' iconComponent={AntennaIcon} text={intl.formatMessage(messages.antennas)} to='/antennasw' />,
         <ColumnLink key='circles' icon='user-circle' iconComponent={CirclesIcon} text={intl.formatMessage(messages.circles)} to='/circles' />,
