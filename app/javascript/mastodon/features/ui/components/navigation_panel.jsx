@@ -200,6 +200,7 @@ class NavigationPanel extends Component {
             <ColumnLink transparent to='/lists' icon='list-ul' iconComponent={ListAltIcon} activeIconComponent={ListAltActiveIcon} text={intl.formatMessage(messages.lists)} />
             <ColumnLink transparent to='/antennasw' icon='wifi' iconComponent={AntennaIcon} text={intl.formatMessage(messages.antennas)} isActive={this.isAntennasActive} />
             <ColumnLink transparent to='/circles' icon='user-circle' iconComponent={CirclesIcon} text={intl.formatMessage(messages.circles)} />
+            <ColumnLink transparent to='/followed_tags' icon='tag' iconComponent={HashtagIcon} activeIconComponent={HashtagActiveIcon} text={intl.formatMessage(messages.followed_tags)} />
             <FollowRequestsLink />
             <ColumnLink transparent to='/conversations' icon='at' iconComponent={AlternateEmailIcon} text={intl.formatMessage(messages.direct)} />
           </>
@@ -214,7 +215,6 @@ class NavigationPanel extends Component {
             <hr />
 
             <ColumnLink transparent href='/settings/preferences' icon='cog' iconComponent={SettingsIcon} text={intl.formatMessage(messages.preferences)} />
-            <ColumnLink transparent href='/followed_tags' icon='tag' iconComponent={HashtagIcon} text={intl.formatMessage(messages.followed_tags)} />
 
             {canManageReports(permissions) && <ColumnLink transparent href='/admin/reports' icon='flag' iconComponent={ModerationIcon} text={intl.formatMessage(messages.moderation)} />}
             {canViewAdminDashboard(permissions) && <ColumnLink transparent href='/admin/dashboard' icon='tachometer' iconComponent={AdministrationIcon} text={intl.formatMessage(messages.administration)} />}
