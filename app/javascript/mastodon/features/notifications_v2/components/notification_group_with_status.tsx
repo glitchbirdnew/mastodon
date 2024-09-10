@@ -11,7 +11,7 @@ import type { IconProp } from 'mastodon/components/icon';
 import { Icon } from 'mastodon/components/icon';
 import { RelativeTimestamp } from 'mastodon/components/relative_timestamp';
 import type { EmojiReactionGroup } from 'mastodon/models/notification_group';
-import { useAppDispatch } from 'mastodon/store';
+import { useAppSelector, useAppDispatch } from 'mastodon/store';
 
 import { AvatarGroup } from './avatar_group';
 import { DisplayedName } from './displayed_name';
@@ -64,6 +64,10 @@ export const NotificationGroupWithStatus: React.FC<{
     [labelRenderer, accountIds, count, labelSeeMoreHref],
   );
 
+  const isPrivateMention = useAppSelector(
+    (state) => state.statuses.getIn([statusId, 'visibility']) === 'direct',
+  );
+
   const handlers = useMemo(
     () => ({
       open: () => {
@@ -83,7 +87,10 @@ export const NotificationGroupWithStatus: React.FC<{
         role='button'
         className={classNames(
           `notification-group focusable notification-group--${type}`,
-          { 'notification-group--unread': unread },
+          {
+            'notification-group--unread': unread,
+            'notification-group--direct': isPrivateMention,
+          },
         )}
         tabIndex={0}
       >

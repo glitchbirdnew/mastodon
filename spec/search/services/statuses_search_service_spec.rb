@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe StatusesSearchService do
+RSpec.describe StatusesSearchService do
   describe 'a local user posts with searchability' do
     subject do
       described_class.new.call('ohagi', account, limit: 10, searchability: searchability).map(&:id)

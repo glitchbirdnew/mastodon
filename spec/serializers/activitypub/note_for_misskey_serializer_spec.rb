@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ActivityPub::NoteForMisskeySerializer do
+RSpec.describe ActivityPub::NoteForMisskeySerializer do
   subject { JSON.parse(serialization.to_json) }
 
   let(:serialization) { ActiveModelSerializers::SerializableResource.new(parent, serializer: described_class, adapter: ActivityPub::Adapter) }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe NodeInfo::Serializer do
+RSpec.describe NodeInfo::Serializer do
   let(:serialization) do
     JSON.parse(
       ActiveModelSerializers::SerializableResource.new(

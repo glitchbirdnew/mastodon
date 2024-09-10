@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'User custom CSS' do
+RSpec.describe 'User custom CSS' do
   let(:user)       { Fabricate(:user) }
   let(:custom_css) { '* { display: none !important; }' }
 

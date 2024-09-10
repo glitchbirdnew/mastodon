@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Admin::NgRule do
+RSpec.describe Admin::NgRule do
   shared_examples 'matches rule' do |reason|
     it 'matches and history is added' do
       expect(subject).to be false

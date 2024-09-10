@@ -31,8 +31,4 @@ class Mention < ApplicationRecord
     to: :account,
     prefix: true
   )
-
-  def active?
-    !silent?
-  end
 end

@@ -22,7 +22,7 @@ RSpec.describe 'Domain Blocks' do
         expect(response)
           .to have_http_status(200)
 
-        expect(body_as_json)
+        expect(response.parsed_body)
           .to be_present
           .and(be_an(Array))
           .and(have_attributes(size: 1))
@@ -34,7 +34,7 @@ RSpec.describe 'Domain Blocks' do
         it 'returns http success and dont include hidden record' do
           get api_v1_instance_domain_blocks_path
 
-          expect(body_as_json.pluck(:domain)).to_not include('hello.com')
+          expect(response.parsed_body.pluck(:domain)).to_not include('hello.com')
         end
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe 'Domain Blocks' do
         expect(response)
           .to have_http_status(200)
 
-        expect(body_as_json)
+        expect(response.parsed_body)
           .to be_present
           .and(be_an(Array))
           .and(have_attributes(size: 1))
@@ -71,7 +71,7 @@ RSpec.describe 'Domain Blocks' do
         it 'returns http success and dont include hidden record' do
           get api_v1_instance_domain_blocks_path, headers: headers
 
-          expect(body_as_json.pluck(:domain)).to_not include('hello.com')
+          expect(response.parsed_body.pluck(:domain)).to_not include('hello.com')
         end
       end
     end

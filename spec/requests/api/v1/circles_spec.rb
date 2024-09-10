@@ -41,7 +41,7 @@ RSpec.describe 'Circles' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(body_as_json).to match_array(expected_response)
+      expect(response.parsed_body).to match_array(expected_response)
     end
   end
 
@@ -58,10 +58,10 @@ RSpec.describe 'Circles' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(body_as_json).to eq({
+      expect(response.parsed_body).to match(
         id: circle.id.to_s,
-        title: circle.title,
-      })
+        title: circle.title
+      )
     end
 
     context 'when the circle belongs to a different user' do
@@ -96,7 +96,7 @@ RSpec.describe 'Circles' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(body_as_json).to match(a_hash_including(title: 'my circle'))
+      expect(response.parsed_body).to match(a_hash_including(title: 'my circle'))
       expect(Circle.where(account: user.account).count).to eq(1)
     end
 
@@ -127,10 +127,10 @@ RSpec.describe 'Circles' do
       expect(response).to have_http_status(200)
       circle.reload
 
-      expect(body_as_json).to eq({
+      expect(response.parsed_body).to match(
         id: circle.id.to_s,
-        title: circle.title,
-      })
+        title: circle.title
+      )
     end
 
     it 'updates the circle title' do

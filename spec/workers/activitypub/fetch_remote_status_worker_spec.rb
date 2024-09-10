@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ActivityPub::FetchRemoteStatusWorker do
+RSpec.describe ActivityPub::FetchRemoteStatusWorker do
   subject { described_class.new }
 
   let(:sender) { Fabricate(:account, domain: 'example.com', uri: 'https://example.com/actor') }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe REST::CustomEmojiSerializer do
+RSpec.describe REST::CustomEmojiSerializer do
   let(:serialization) { serialized_record_json(record, described_class) }
   let(:record) do
     Fabricate(:custom_emoji, shortcode: 'ohagi', aliases: aliases)

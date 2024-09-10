@@ -108,11 +108,16 @@ module ApplicationHelper
   end
 
   def material_symbol(icon, attributes = {})
-    inline_svg_tag(
-      "400-24px/#{icon}.svg",
-      class: ['icon', "material-#{icon}"].concat(attributes[:class].to_s.split),
-      role: :img,
-      data: attributes[:data]
+    safe_join(
+      [
+        inline_svg_tag(
+          "400-24px/#{icon}.svg",
+          class: ['icon', "material-#{icon}"].concat(attributes[:class].to_s.split),
+          role: :img,
+          data: attributes[:data]
+        ),
+        ' ',
+      ]
     )
   end
 
@@ -160,6 +165,7 @@ module ApplicationHelper
 
   def body_classes
     output = body_class_string.split
+    output << content_for(:body_classes)
     output << "theme-#{current_theme.parameterize}"
     output << 'system-font' if current_account&.user&.setting_system_font_ui
     output << (current_account&.user&.setting_reduce_motion ? 'reduce-motion' : 'no-reduce-motion')

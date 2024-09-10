@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe FriendDomain do
+RSpec.describe FriendDomain do
   let(:friend) { Fabricate(:friend_domain, domain: 'foo.bar', inbox_url: 'https://foo.bar/inbox') }
 
   before do

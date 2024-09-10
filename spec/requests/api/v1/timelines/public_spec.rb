@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Public' do
+RSpec.describe 'Public' do
   let(:user)    { Fabricate(:user) }
   let(:scopes)  { 'read:statuses' }
   let(:token)   { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: scopes) }
@@ -16,7 +16,7 @@ describe 'Public' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(body_as_json.pluck(:id)).to match_array(expected_statuses.map { |status| status.id.to_s })
+      expect(response.parsed_body.pluck(:id)).to match_array(expected_statuses.map { |status| status.id.to_s })
     end
   end
 
@@ -104,7 +104,7 @@ describe 'Public' do
           subject
 
           expect(response).to have_http_status(200)
-          expect(body_as_json.size).to eq(params[:limit])
+          expect(response.parsed_body.size).to eq(params[:limit])
         end
 
         it 'sets the correct pagination headers', :aggregate_failures do
@@ -156,7 +156,7 @@ describe 'Public' do
     context 'when user is setting filters' do
       subject do
         get '/api/v1/timelines/public', headers: headers, params: params
-        body_as_json.filter { |status| status[:filtered].empty? || status[:filtered][0][:filter][:id] != filter.id.to_s }.map { |status| status[:id].to_i }
+        response.parsed_body.filter { |status| status[:filtered].empty? || status[:filtered][0][:filter][:id] != filter.id.to_s }.map { |status| status[:id].to_i }
       end
 
       before do

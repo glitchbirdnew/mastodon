@@ -29,7 +29,7 @@ RSpec.describe 'EmojiReactions' do
       it 'returns json with updated attributes' do
         subject
 
-        expect(body_as_json).to match(
+        expect(response.parsed_body).to match(
           a_hash_including(id: status.id.to_s, emoji_reactions_count: 1)
         )
       end
@@ -133,7 +133,7 @@ RSpec.describe 'EmojiReactions' do
       it 'returns json with updated attributes' do
         subject
 
-        expect(body_as_json).to match(
+        expect(response.parsed_body).to match(
           a_hash_including(id: status.id.to_s, emoji_reactions_count: 0)
         )
       end
@@ -155,7 +155,7 @@ RSpec.describe 'EmojiReactions' do
       it 'returns json with updated attributes' do
         subject
 
-        expect(body_as_json).to match(
+        expect(response.parsed_body).to match(
           a_hash_including(id: status.id.to_s, emoji_reactions_count: 0)
         )
       end
