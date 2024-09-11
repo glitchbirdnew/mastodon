@@ -15,6 +15,7 @@ import BookmarksIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
 import ExploreIcon from '@/material-icons/400-24px/explore.svg?react';
 import ModerationIcon from '@/material-icons/400-24px/gavel.svg?react';
 import HashtagIcon from '@/material-icons/400-24px/tag.svg?react';
+import Directory from '@/material-icons/400-24px/group.svg?react';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
@@ -44,6 +45,7 @@ const messages = defineMessages({
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   public_timeline: { id: 'navigation_bar.public_timeline', defaultMessage: 'Federated timeline' },
   followed_tags: { id: 'navigation_bar.followed_tags', defaultMessage: 'Followed Hashtags' },
+  directory: { id: 'navigation_bar.directory', defaultMessage: 'Profile directory' },
   settings_subheading: { id: 'column_subheading.settings', defaultMessage: 'Settings' },
   community_timeline: { id: 'navigation_bar.community_timeline', defaultMessage: 'Local timeline' },
   deep_timeline: { id: 'navigation_bar.deep_timeline', defaultMessage: 'Deep timeline' },
