@@ -132,7 +132,7 @@ class LoginForm extends React.PureComponent {
     try {
       new URL(url);
       return true;
-    } catch(_) {
+    } catch {
       return false;
     }
   };

@@ -62,7 +62,7 @@ class Status < ApplicationRecord
   update_index('statuses', :proper)
   update_index('public_statuses', :proper)
 
-  enum :visibility, { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, suffix: :visibility
+  enum :visibility, { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, suffix: :visibility, validate: true
   enum :searchability, { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, suffix: :searchability
   enum :limited_scope, { none: 0, mutual: 1, circle: 2, personal: 3, reply: 4 }, suffix: :limited
 
