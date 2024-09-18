@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module KmyblueCapabilitiesHelper
-  KMYBLUE_API_VERSION = 1
-
   def fedibird_capabilities
     capabilities = %i(
       enable_wide_emoji

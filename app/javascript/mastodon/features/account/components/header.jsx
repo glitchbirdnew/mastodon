@@ -96,10 +96,10 @@ const messageForFollowButton = relationship => {
 
   if (relationship.get('following') && relationship.get('followed_by') && isShowItem('relationships')) {
     return messages.mutual;
-  } else if (!relationship.get('following') && relationship.get('followed_by') && isShowItem('relationships')) {
-    return messages.followBack;
   } else if (relationship.get('following') || relationship.get('requested')) {
     return messages.unfollow;
+  } else if (relationship.get('followed_by') && isShowItem('relationships')) {
+    return messages.followBack;
   } else {
     return messages.follow;
   }

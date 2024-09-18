@@ -133,10 +133,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
   end
 
   def api_versions
-    {
-      mastodon: 1,
-      kmyblue: KMYBLUE_API_VERSION,
-    }
+    Mastodon::Version.api_versions
   end
 
   private

@@ -2,6 +2,8 @@
 
 module Mastodon
   module Version
+    KMYBLUE_API_VERSION = 1
+
     module_function
 
     def kmyblue_major
@@ -31,7 +33,7 @@ module Mastodon
     end
 
     def default_prerelease
-      'beta.1'
+      'beta.2'
     end
 
     def prerelease
@@ -88,6 +90,13 @@ module Mastodon
 
     def dev?
       kmyblue_flag == 'dev'
+    end
+
+    def api_versions
+      {
+        mastodon: 2,
+        kmyblue: KMYBLUE_API_VERSION,
+      }
     end
 
     def repository

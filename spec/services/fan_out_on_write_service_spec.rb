@@ -60,6 +60,7 @@ RSpec.describe FanOutOnWriteService do
   end
 
   def list_with_account(owner, target_account)
+    owner.follow!(target_account)
     list = Fabricate(:list, account: owner)
     Fabricate(:list_account, list: list, account: target_account)
     list

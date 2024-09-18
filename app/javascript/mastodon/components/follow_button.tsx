@@ -79,14 +79,10 @@ export const FollowButton: React.FC<{
     relationship.followed_by
   ) {
     label = intl.formatMessage(messages.mutual);
-  } else if (
-    !relationship.following &&
-    isShowItem('relationships') &&
-    relationship.followed_by
-  ) {
-    label = intl.formatMessage(messages.followBack);
   } else if (relationship.following || relationship.requested) {
     label = intl.formatMessage(messages.unfollow);
+  } else if (relationship.followed_by && isShowItem('relationships')) {
+    label = intl.formatMessage(messages.followBack);
   } else {
     label = intl.formatMessage(messages.follow);
   }
