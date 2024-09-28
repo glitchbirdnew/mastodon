@@ -497,36 +497,45 @@ class StatusActionBar extends ImmutablePureComponent {
 
     return (
       <div className='status__action-bar'>
-        <IconButton className='status__action-bar__button' title={replyTitle} icon={isReply ? 'reply' : replyIcon} iconComponent={isReply ? ReplyIcon : replyIconComponent} onClick={this.handleReplyClick} counter={status.get('replies_count')} />
-        {reblogMenu.length === 0 ? reblogButton : (
+        <div className='status__action-bar__button-wrapper'>
+          <IconButton className='status__action-bar__button' title={replyTitle} icon={isReply ? 'reply' : replyIcon} iconComponent={isReply ? ReplyIcon : replyIconComponent} onClick={this.handleReplyClick} counter={status.get('replies_count')} />
+        </div>
+        <div className='status__action-bar__button-wrapper'>
+          {reblogMenu.length === 0 ? reblogButton : (
+            <DropdownMenuContainer
+              className={classNames('status__action-bar__button', { reblogPrivate })}
+              scrollKey={scrollKey}
+              status={status}
+              items={reblogMenu}
+              icon='retweet'
+              iconComponent={reblogIconComponent}
+              direction='right'
+              title={reblogTitle}
+              active={status.get('reblogged')}
+              disabled={!publicStatus && !reblogPrivate}
+            >
+              {reblogButton}
+            </DropdownMenuContainer>
+          )}
+        </div>
+        <div className='status__action-bar__button-wrapper'>
+          <IconButton className='status__action-bar__button star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} counter={withCounters ? status.get('favourites_count') : undefined} />
+        </div>
+        <div className='status__action-bar__button-wrapper'>
+          <IconButton className='status__action-bar__button bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' iconComponent={status.get('bookmarked') ? BookmarkIcon : BookmarkBorderIcon} onClick={this.handleBookmarkClick} />
+        </div>
+        {emojiPickerDropdown}
+        <div className='status__action-bar__button-wrapper'>
           <DropdownMenuContainer
-            className={classNames('status__action-bar__button', { reblogPrivate })}
             scrollKey={scrollKey}
             status={status}
-            items={reblogMenu}
-            icon='retweet'
-            iconComponent={reblogIconComponent}
+            items={menu}
+            icon='ellipsis-h'
+            iconComponent={MoreHorizIcon}
             direction='right'
-            title={reblogTitle}
-            active={status.get('reblogged')}
-            disabled={!publicStatus && !reblogPrivate}
-          >
-            {reblogButton}
-          </DropdownMenuContainer>
-        )}
-        <IconButton className='status__action-bar__button star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} counter={withCounters ? status.get('favourites_count') : undefined} />
-        <IconButton className='status__action-bar__button bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' iconComponent={status.get('bookmarked') ? BookmarkIcon : BookmarkBorderIcon} onClick={this.handleBookmarkClick} />
-        {emojiPickerDropdown}
-
-        <DropdownMenuContainer
-          scrollKey={scrollKey}
-          status={status}
-          items={menu}
-          icon='ellipsis-h'
-          iconComponent={MoreHorizIcon}
-          direction='right'
-          title={intl.formatMessage(messages.more)}
-        />
+            title={intl.formatMessage(messages.more)}
+          />
+        </div>
       </div>
     );
   }
