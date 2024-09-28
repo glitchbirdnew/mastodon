@@ -63,22 +63,8 @@ class LinkFooter extends PureComponent {
               <a href='/invites' target='_blank'><FormattedMessage id='footer.invite' defaultMessage='Invite people' /></a>
             </>
           )}
-          {canProfileDirectory && (
-            <>
-              {DividingCircle}
-              <Link to='/directory'><FormattedMessage id='footer.directory' defaultMessage='Profiles directory' /></Link>
-            </>
-          )}
           {DividingCircle}
           <Link to='/privacy-policy' target={multiColumn ? '_blank' : undefined}><FormattedMessage id='footer.privacy_policy' defaultMessage='Privacy policy' /></Link>
-        </p>
-
-        <p>
-          <strong>Mastodon</strong>:
-          {' '}
-          <a href='https://joinmastodon.org' target='_blank'><FormattedMessage id='footer.about' defaultMessage='About' /></a>
-          {DividingCircle}
-          <a href='https://joinmastodon.org/apps' target='_blank'><FormattedMessage id='footer.get_app' defaultMessage='Get the app' /></a>
           {DividingCircle}
           <Link to='/keyboard-shortcuts'><FormattedMessage id='footer.keyboard_shortcuts' defaultMessage='Keyboard shortcuts' /></Link>
           {DividingCircle}
