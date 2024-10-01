@@ -92,7 +92,7 @@ $media-modal-media-max-width: 100%;
 // put margins on top and bottom of image to avoid the screen covered by image.
 $media-modal-media-max-height: 80%;
 
-$no-gap-breakpoint: 1207px;
+$no-gap-breakpoint: 1175px;
 $mobile-breakpoint: 630px;
 
 $font-sans-serif: 'mastodon-font-sans-serif' !default;
@@ -122,4 +122,7 @@ $font-monospace: 'mastodon-font-monospace' !default;
   --detail-content-font-size: 19px;
   --detail-content-emoji-size: 24px;
   --detail-content-line-height: 24px;
+  --error-background-color: #{darken($error-red, 16%)};
+  --error-active-background-color: #{darken($error-red, 12%)};
+  --on-error-color: #fff;
 }
