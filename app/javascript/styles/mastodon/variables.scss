@@ -122,6 +122,8 @@ $font-monospace: 'mastodon-font-monospace' !default;
   --detail-content-font-size: 19px;
   --detail-content-emoji-size: 24px;
   --detail-content-line-height: 24px;
+  --media-outline-color: #{rgba(#fcf8ff, 0.15)};
+  --overlay-icon-shadow: drop-shadow(0 0 8px #{rgba($base-shadow-color, 0.25)});
   --error-background-color: #{darken($error-red, 16%)};
   --error-active-background-color: #{darken($error-red, 12%)};
   --on-error-color: #fff;

@@ -484,11 +484,13 @@ class StatusActionBar extends ImmutablePureComponent {
     const outside = emojiReactionPolicy !== 'outside_only' || (relationship && (relationship.get('following') || relationship.get('followed_by')));
     const denyFromAll = emojiReactionPolicy !== 'block' && emojiReactionPolicy !== 'block';
     const emojiPickerDropdown = (enableEmojiReaction && emojiReactionAvailableServer && denyFromAll && (writtenByMe || (following && followed && mutual && outside)) && (
-      <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={(
-        <IconButton className='status__action-bar__button' icon='smile-o' iconComponent={EmojiReactionIcon} onClick={this.handleEmojiPickInnerButton} />
-      )} />
+      <div className='status__action-bar__button-wrapper'>
+        <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={(
+          <IconButton icon='smile-o' iconComponent={EmojiReactionIcon} onClick={this.handleEmojiPickInnerButton} />
+        )} />
+      </div>
     )) || (enableEmojiReaction && (
-      <div className='status__action-bar__button__blank' />
+      <div className='status__action-bar__button-wrapper status__action-bar__button-wrapper__blank' />
     )) || null;
 
     const isReply = status.get('in_reply_to_account_id') === status.getIn(['account', 'id']);

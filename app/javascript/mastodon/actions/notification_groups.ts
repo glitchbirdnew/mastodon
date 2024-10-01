@@ -68,7 +68,11 @@ function dispatchAssociatedRecords(
     dispatch(importFetchedStatuses(fetchedStatuses));
 }
 
-const supportedGroupedNotificationTypes = ['favourite', 'reblog'];
+const supportedGroupedNotificationTypes = [
+  'favourite',
+  'reblog',
+  'emoji_reaction',
+];
 
 export const fetchNotifications = createDataLoadingThunk(
   'notificationGroups/fetch',
