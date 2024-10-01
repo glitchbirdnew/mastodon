@@ -21,6 +21,7 @@ import {
   unmountNotifications,
   refreshStaleNotificationGroups,
   pollRecentNotifications,
+  shouldGroupNotificationType,
 } from 'mastodon/actions/notification_groups';
 import {
   disconnectTimeline,
@@ -205,81 +206,50 @@ function processNewNotification(
   groups: NotificationGroupsState['groups'],
   notification: ApiNotificationJSON,
 ) {
-  const existingGroupIndex = groups.findIndex(
-    (group) =>
-      group.type !== 'gap' && group.group_key === notification.group_key,
-  );
+  if (shouldGroupNotificationType(notification.type)) {
+    const existingGroupIndex = groups.findIndex(
+      (group) =>
+        group.type !== 'gap' && group.group_key === notification.group_key,
+    );
 
-  // In any case, we are going to add a group at the top
-  // If there is currently a gap at the top, now is the time to update it
-  if (groups.length > 0 && groups[0]?.type === 'gap') {
-    groups[0].maxId = notification.id;
-  }
+    // In any case, we are going to add a group at the top
+    // If there is currently a gap at the top, now is the time to update it
+    if (groups.length > 0 && groups[0]?.type === 'gap') {
+      groups[0].maxId = notification.id;
+    }
 
-  if (existingGroupIndex > -1) {
-    const existingGroup = groups[existingGroupIndex];
+    if (existingGroupIndex > -1) {
+      const existingGroup = groups[existingGroupIndex];
 
-    if (existingGroup && existingGroup.type !== 'gap') {
-      // Update emoji reaction emoji groups
-      if (existingGroup.type === 'emoji_reaction') {
-        const emojiReactionGroups = existingGroup.emojiReactionGroups;
-        const emojiReactionData = notification.emoji_reaction;
+      if (
+        existingGroup &&
+        existingGroup.type !== 'gap' &&
+        !existingGroup.sampleAccountIds.includes(notification.account.id) // This can happen for example if you like, then unlike, then like again the same post
+      ) {
+        // Update the existing group
+        if (
+          existingGroup.sampleAccountIds.unshift(notification.account.id) >
+          NOTIFICATIONS_GROUP_MAX_AVATARS
+        )
+          existingGroup.sampleAccountIds.pop();
 
-        if (emojiReactionGroups && emojiReactionData) {
-          const sameEmojiIndex = emojiReactionGroups.findIndex(
-            (g) => g.emoji.name === emojiReactionData.name,
-          );
+        existingGroup.most_recent_notification_id = notification.id;
+        existingGroup.page_max_id = notification.id;
+        existingGroup.latest_page_notification_at = notification.created_at;
+        existingGroup.notifications_count += 1;
 
-          if (sameEmojiIndex > -1) {
-            const sameEmoji = emojiReactionGroups[sameEmojiIndex];
+        groups.splice(existingGroupIndex, 1);
+        mergeGapsAround(groups, existingGroupIndex);
 
-            if (sameEmoji) {
-              if (
-                !sameEmoji.sampleAccountIds.includes(notification.account.id) &&
-                sameEmoji.sampleAccountIds.unshift(notification.account.id) >
-                  NOTIFICATIONS_GROUP_MAX_AVATARS
-              )
-                sameEmoji.sampleAccountIds.pop();
+        groups.unshift(existingGroup);
 
-              emojiReactionGroups.splice(sameEmojiIndex, 1);
-              emojiReactionGroups.unshift(sameEmoji);
-            }
-          } else {
-            emojiReactionGroups.unshift({
-              emoji: emojiReactionData,
-              sampleAccountIds: [notification.account.id],
-            });
-          }
-        }
+        return;
       }
     }
-
-    if (
-      existingGroup &&
-      existingGroup.type !== 'gap' &&
-      !existingGroup.sampleAccountIds.includes(notification.account.id) // This can happen for example if you like, then unlike, then like again the same post
-    ) {
-      // Update the existing group
-      if (
-        existingGroup.sampleAccountIds.unshift(notification.account.id) >
-        NOTIFICATIONS_GROUP_MAX_AVATARS
-      )
-        existingGroup.sampleAccountIds.pop();
-
-      existingGroup.most_recent_notification_id = notification.id;
-      existingGroup.page_max_id = notification.id;
-      existingGroup.latest_page_notification_at = notification.created_at;
-      existingGroup.notifications_count += 1;
-
-      groups.splice(existingGroupIndex, 1);
-      mergeGapsAround(groups, existingGroupIndex);
-
-      groups.unshift(existingGroup);
-    }
-  } else {
-    // Create a new group
-    groups.unshift(createNotificationGroupFromNotificationJSON(notification));
   }
+
+  // We have not found an existing group, create a new one
+  groups.unshift(createNotificationGroupFromNotificationJSON(notification));
 }
 
 function trimNotifications(state: NotificationGroupsState) {
