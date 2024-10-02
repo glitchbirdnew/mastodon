@@ -33,7 +33,7 @@ module Mastodon
     end
 
     def default_prerelease
-      'rc.1'
+      'beta.2'
     end
 
     def prerelease

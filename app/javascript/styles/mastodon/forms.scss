@@ -324,10 +324,6 @@ code {
 
     ul {
       columns: 2;
-
-      @media screen and (max-width: $mobile-breakpoint) {
-        columns: 1;
-      }
     }
   }
 

@@ -10,5 +10,3 @@ export type Status = Immutable.Map<string, unknown>;
 type CardShape = Required<ApiPreviewCardJSON>;
 
 export type Card = RecordOf<CardShape>;
-
-export type MediaAttachment = Immutable.Map<string, unknown>;

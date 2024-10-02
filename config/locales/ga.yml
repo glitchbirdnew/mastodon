@@ -917,9 +917,6 @@ ga:
         message_html: Níl aon rialacha freastalaí sainmhínithe agat.
       sidekiq_process_check:
         message_html: Níl próiseas Sidekiq ag rith don scuaine/(scuainí) %{value}. Déan athbhreithniú ar do chumraíocht Sidekiq
-      software_version_check:
-        action: Féach nuashonruithe atá ar fáil
-        message_html: Tá nuashonrú Mastodon ar fáil.
       software_version_critical_check:
         action: Féach nuashonruithe atá ar fáil
         message_html: Tá nuashonrú ríthábhachtach Mastodon ar fáil, nuashonraigh chomh tapa agus is féidir le do thoil.
@@ -1773,7 +1770,7 @@ ga:
     delete: Scriosadh cuntais
     development: Forbairt
     edit_profile: Cuir an phróifíl in eagar
-    export: Easpórtáil
+    export: Easpórtáil sonraí
     featured_tags: Haischlib faoi thrácht
     import: Iompórtáil
     import_and_export: Iompórtáil agus easpórtáil

@@ -32,7 +32,7 @@
 .batch-table
   .batch-table__body
     - if @tags.empty?
-      = nothing_here 'nothing-here--under-tabs nothing-here--no-toolbar'
+      = nothing_here 'nothing-here--under-tabs'
     - else
       = render partial: 'tag', collection: @tags
 
