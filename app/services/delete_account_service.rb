@@ -17,7 +17,6 @@ class DeleteAccountService < BaseService
     conversation_mutes
     conversations
     custom_filters
-    devices
     domain_blocks
     featured_tags
     fetchable_pending_statuses
@@ -50,7 +49,6 @@ class DeleteAccountService < BaseService
     conversation_mutes
     conversations
     custom_filters
-    devices
     domain_blocks
     featured_tags
     fetchable_pending_statuses

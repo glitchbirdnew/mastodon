@@ -15,6 +15,8 @@ RSpec.describe 'Filters' do
       subject
 
       expect(response).to have_http_status(401)
+      expect(response.content_type)
+        .to start_with('application/json')
     end
   end
 
@@ -32,6 +34,8 @@ RSpec.describe 'Filters' do
       subject
 
       expect(response).to have_http_status(200)
+      expect(response.content_type)
+        .to start_with('application/json')
       expect(response.parsed_body.pluck(:id)).to match_array(filters.map { |filter| filter.id.to_s })
     end
   end
@@ -59,14 +63,12 @@ RSpec.describe 'Filters' do
         }
       end
 
-      it 'returns http success' do
+      it 'returns http success with a filter with keywords in json and creates a filter', :aggregate_failures do
         subject
 
         expect(response).to have_http_status(200)
-      end
-
-      it 'returns a filter with keywords', :aggregate_failures do
-        subject
+        expect(response.content_type)
+          .to start_with('application/json')
 
         expect(response.parsed_body)
           .to include(
@@ -80,10 +82,6 @@ RSpec.describe 'Filters' do
             exclude_localusers: true,
             with_profile: true
           )
-      end
-
-      it 'creates a filter', :aggregate_failures do
-        subject
 
         filter = user.account.custom_filters.first
 
@@ -105,6 +103,8 @@ RSpec.describe 'Filters' do
         subject
 
         expect(response).to have_http_status(422)
+        expect(response.content_type)
+          .to start_with('application/json')
       end
     end
 
@@ -115,6 +115,8 @@ RSpec.describe 'Filters' do
         subject
 
         expect(response).to have_http_status(422)
+        expect(response.content_type)
+          .to start_with('application/json')
       end
     end
 
@@ -135,6 +137,8 @@ RSpec.describe 'Filters' do
         subject
 
         expect(response).to have_http_status(422)
+        expect(response.content_type)
+          .to start_with('application/json')
       end
     end
   end
@@ -153,6 +157,8 @@ RSpec.describe 'Filters' do
       subject
 
       expect(response).to have_http_status(200)
+      expect(response.content_type)
+        .to start_with('application/json')
       expect(response.parsed_body)
         .to include(
           id: filter.id.to_s
@@ -166,6 +172,8 @@ RSpec.describe 'Filters' do
         subject
 
         expect(response).to have_http_status(404)
+        expect(response.content_type)
+          .to start_with('application/json')
       end
     end
   end
@@ -192,6 +200,8 @@ RSpec.describe 'Filters' do
           filter.reload
 
           expect(response).to have_http_status(200)
+          expect(response.content_type)
+            .to start_with('application/json')
           expect(filter.title).to eq 'updated'
           expect(filter.reload.context).to eq %w(home public)
           expect(filter.exclude_follows).to be true
@@ -207,6 +217,8 @@ RSpec.describe 'Filters' do
           subject
 
           expect(response).to have_http_status(422)
+          expect(response.content_type)
+            .to start_with('application/json')
         end
       end
     end
@@ -218,20 +230,14 @@ RSpec.describe 'Filters' do
         allow(redis).to receive_messages(publish: nil)
       end
 
-      it 'returns http success' do
+      it 'returns http success and updates keyword and sends a filters_changed event' do
         subject
 
         expect(response).to have_http_status(200)
-      end
-
-      it 'updates the keyword' do
-        subject
+        expect(response.content_type)
+          .to start_with('application/json')
 
         expect(keyword.reload.keyword).to eq 'updated'
-      end
-
-      it 'sends exactly one filters_changed event' do
-        subject
 
         expect(redis).to have_received(:publish).with("timeline:#{user.account.id}", Oj.dump(event: :filters_changed)).once
       end
@@ -244,6 +250,8 @@ RSpec.describe 'Filters' do
         subject
 
         expect(response).to have_http_status(404)
+        expect(response.content_type)
+          .to start_with('application/json')
       end
     end
   end
@@ -258,14 +266,12 @@ RSpec.describe 'Filters' do
     it_behaves_like 'forbidden for wrong scope', 'read read:filters'
     it_behaves_like 'unauthorized for invalid token'
 
-    it 'returns http success' do
+    it 'returns http success and removes the filter' do
       subject
 
       expect(response).to have_http_status(200)
-    end
-
-    it 'removes the filter' do
-      subject
+      expect(response.content_type)
+        .to start_with('application/json')
 
       expect { filter.reload }.to raise_error ActiveRecord::RecordNotFound
     end
@@ -277,6 +283,8 @@ RSpec.describe 'Filters' do
         subject
 
         expect(response).to have_http_status(404)
+        expect(response.content_type)
+          .to start_with('application/json')
       end
     end
   end
