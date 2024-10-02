@@ -7,11 +7,7 @@ RSpec.describe 'Invites' do
 
   let(:user) { Fabricate :user }
 
-  before do
-    UserRole.everyone.update(permissions: UserRole::FLAGS[:invite_users])
-    host! 'localhost:3000' # TODO: Move into before for all system specs?
-    sign_in user
-  end
+  before { sign_in user }
 
   describe 'Viewing invites' do
     it 'Lists existing user invites' do
