@@ -13,8 +13,6 @@ import BookmarksActiveIcon from '@/material-icons/400-24px/bookmarks-fill.svg?re
 import BookmarksIcon from '@/material-icons/400-24px/bookmarks.svg?react';
 import ExploreActiveIcon from '@/material-icons/400-24px/explore-fill.svg?react';
 import ExploreIcon from '@/material-icons/400-24px/explore.svg?react';
-import HashtagIcon from '@/material-icons/400-24px/tag.svg?react';
-import DirectoryIcon from '@/material-icons/400-24px/group.svg?react';
 import ModerationIcon from '@/material-icons/400-24px/gavel.svg?react';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
 import HomeActiveIcon from '@/material-icons/400-24px/home-fill.svg?react';
@@ -52,8 +50,6 @@ const messages = defineMessages({
   home: { id: 'tabs_bar.home', defaultMessage: 'Home' },
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   explore: { id: 'explore.title', defaultMessage: 'Explore' },
-  followed_tags: { id: 'navigation_bar.followed_tags', defaultMessage: 'Followed hashtags' },
-  directory: { id: 'navigation_bar.directory', defaultMessage: 'Profiles directory' },
   local: { id: 'column.local', defaultMessage: 'Local' },
   deepLocal: { id: 'column.deep_local', defaultMessage: 'Deep' },
   firehose: { id: 'column.firehose', defaultMessage: 'Live feeds' },
@@ -232,42 +228,7 @@ class NavigationPanel extends Component {
 
           <div className='navigation-panel__legal'>
             <hr />
-
             <ColumnLink transparent to='/about' icon='ellipsis-h' iconComponent={MoreHorizIcon} text={intl.formatMessage(messages.about)} />
-          </>
-        )}
-
-        {signedIn && (
-          <>
-            <ColumnLink transparent to='/lists' icon='list-ul' iconComponent={ListAltIcon} activeIconComponent={ListAltActiveIcon} text={intl.formatMessage(messages.lists)} />
-            <ColumnLink transparent to='/antennasw' icon='wifi' iconComponent={AntennaIcon} text={intl.formatMessage(messages.antennas)} isActive={this.isAntennasActive} />
-            <ColumnLink transparent to='/circles' icon='user-circle' iconComponent={CirclesIcon} text={intl.formatMessage(messages.circles)} />
-            <ColumnLink transparent to='/followed_tags' icon='tag' iconComponent={HashtagIcon} text={intl.formatMessage(messages.followed_tags)} />
-            <ColumnLink transparent to='/directory' icon='group' iconComponent={DirectoryIcon} text={intl.formatMessage(messages.directory)} />
-            <FollowRequestsLink />
-            <ColumnLink transparent to='/conversations' icon='at' iconComponent={AlternateEmailIcon} text={intl.formatMessage(messages.direct)} />
-          </>
-        )}
-
-        {signedIn && explorer}
-
-        {signedIn && (
-          <>
-            <ColumnLink transparent to='/bookmark_categories' icon='bookmarks' iconComponent={BookmarksIcon} activeIconComponent={BookmarksActiveIcon} text={intl.formatMessage(messages.bookmarks)} />
-            { !isHideItem('favourite_menu') && <ColumnLink transparent to='/favourites' icon='star' iconComponent={StarIcon} activeIconComponent={StarActiveIcon} text={intl.formatMessage(messages.favourites)} /> }
-            <hr />
-
-            <ColumnLink transparent href='/settings/preferences' icon='cog' iconComponent={SettingsIcon} text={intl.formatMessage(messages.preferences)} />
-
-            {canManageReports(permissions) && <ColumnLink transparent href='/admin/reports' icon='flag' iconComponent={ModerationIcon} text={intl.formatMessage(messages.moderation)} />}
-            {canViewAdminDashboard(permissions) && <ColumnLink transparent href='/admin/dashboard' icon='tachometer' iconComponent={AdministrationIcon} text={intl.formatMessage(messages.administration)} />}
-          </>
-        )}
-
-        {!signedIn && (
-          <div className='navigation-panel__sign-in-banner'>
-            <hr />
-            { disabledAccountId ? <DisabledAccountBanner /> : <SignInBanner /> }
           </div>
         </div>
 
