@@ -204,7 +204,7 @@ class Item extends PureComponent {
 
         {visible && thumbnail}
 
-        {badges && (
+        {visible && badges && (
           <div className='media-gallery__item__badges'>
             {badges}
           </div>
