@@ -7,7 +7,7 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   context :security
 
   context_extensions :manually_approves_followers, :featured, :also_known_as,
-                     :moved_to, :property_value, :discoverable, :suspended, :searchable_by,
+                     :moved_to, :property_value, :discoverable, :olm, :suspended, :searchable_by,
                      :other_setting, :memorial, :indexable, :attribution_domains
 
   attributes :id, :type, :following, :followers,
@@ -21,6 +21,7 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   has_many :virtual_tags, key: :tag
   has_many :virtual_attachments, key: :attachment
 
+  attribute :devices, unless: :instance_actor?
   attribute :moved_to, if: :moved?
   attribute :also_known_as, if: :also_known_as?
   attribute :suspended, if: :suspended?
@@ -69,6 +70,10 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
 
   def inbox
     object.instance_actor? ? instance_actor_inbox_url : account_inbox_url(object)
+  end
+
+  def devices
+    account_collection_url(object, :devices)
   end
 
   def outbox

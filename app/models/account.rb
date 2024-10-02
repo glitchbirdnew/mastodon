@@ -42,6 +42,7 @@
 #  hide_collections              :boolean
 #  avatar_storage_schema_version :integer
 #  header_storage_schema_version :integer
+#  devices_url                   :string
 #  suspension_origin             :integer
 #  sensitized_at                 :datetime
 #  trendable                     :boolean
@@ -59,12 +60,11 @@
 
 class Account < ApplicationRecord
   self.ignored_columns += %w(
-    devices_url
-    hub_url
+    subscription_expires_at
+    secret
     remote_url
     salmon_url
-    secret
-    subscription_expires_at
+    hub_url
     trust_level
   )
 

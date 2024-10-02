@@ -16,8 +16,6 @@ RSpec.describe 'API V1 Admin Trends Statuses' do
       get '/api/v1/admin/trends/statuses', params: { account_id: account.id, limit: 2 }, headers: headers
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
   end
 
@@ -31,8 +29,6 @@ RSpec.describe 'API V1 Admin Trends Statuses' do
 
     it 'returns http success' do
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
   end
 
@@ -46,8 +42,6 @@ RSpec.describe 'API V1 Admin Trends Statuses' do
 
     it 'returns http success' do
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
   end
 end

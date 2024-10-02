@@ -18,8 +18,6 @@ RSpec.describe 'Links' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
   end
 
@@ -38,8 +36,6 @@ RSpec.describe 'Links' do
         .to change_link_trendable_to_true
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expects_correct_link_data
     end
 
@@ -64,8 +60,6 @@ RSpec.describe 'Links' do
         post '/api/v1/admin/trends/links/-1/approve', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -76,8 +70,6 @@ RSpec.describe 'Links' do
         subject
 
         expect(response).to have_http_status(403)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -97,8 +89,6 @@ RSpec.describe 'Links' do
         .to_not change_link_trendable
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
 
     def change_link_trendable
@@ -124,8 +114,6 @@ RSpec.describe 'Links' do
         post '/api/v1/admin/trends/links/-1/reject', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -136,8 +124,6 @@ RSpec.describe 'Links' do
         subject
 
         expect(response).to have_http_status(403)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

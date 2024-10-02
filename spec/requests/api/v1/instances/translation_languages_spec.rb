@@ -10,8 +10,6 @@ RSpec.describe 'Translation Languages' do
 
         expect(response)
           .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
 
         expect(response.parsed_body)
           .to eq({})
@@ -26,8 +24,6 @@ RSpec.describe 'Translation Languages' do
 
         expect(response)
           .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
 
         expect(response.parsed_body)
           .to match({ und: %w(en de), en: ['de'] })

@@ -69,10 +69,9 @@ RSpec.describe ActivityPub::OutboxesController do
 
           expect(response.parsed_body)
             .to include(
-              orderedItems: be_an(Array)
-              .and(have_attributes(size: 2))
-              .and(all(satisfy { |item| targets_public_collection?(item) }))
+              orderedItems: be_an(Array).and(have_attributes(size: 2))
             )
+          expect(response.parsed_body[:orderedItems].all? { |item| targets_public_collection?(item) }).to be true
         end
 
         context 'when account is permanently suspended' do
@@ -114,10 +113,9 @@ RSpec.describe ActivityPub::OutboxesController do
 
           expect(response.parsed_body)
             .to include(
-              orderedItems: be_an(Array)
-              .and(have_attributes(size: 2))
-              .and(all(satisfy { |item| targets_public_collection?(item) }))
+              orderedItems: be_an(Array).and(have_attributes(size: 2))
             )
+          expect(response.parsed_body[:orderedItems].all? { |item| targets_public_collection?(item) }).to be true
         end
       end
 
@@ -134,10 +132,9 @@ RSpec.describe ActivityPub::OutboxesController do
 
           expect(response.parsed_body)
             .to include(
-              orderedItems: be_an(Array)
-              .and(have_attributes(size: 3))
-              .and(all(satisfy { |item| targets_public_collection?(item) || targets_followers_collection?(item, account) }))
+              orderedItems: be_an(Array).and(have_attributes(size: 3))
             )
+          expect(response.parsed_body[:orderedItems].all? { |item| targets_public_collection?(item) || targets_followers_collection?(item, account) }).to be true
         end
       end
 

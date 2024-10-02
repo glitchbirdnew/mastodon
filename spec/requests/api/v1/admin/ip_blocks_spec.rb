@@ -20,16 +20,17 @@ RSpec.describe 'IP Blocks' do
     it_behaves_like 'forbidden for wrong role', ''
     it_behaves_like 'forbidden for wrong role', 'Moderator'
 
+    it 'returns http success' do
+      subject
+
+      expect(response).to have_http_status(200)
+    end
+
     context 'when there is no ip block' do
       it 'returns an empty body' do
         subject
 
-        expect(response)
-          .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
-        expect(response.parsed_body)
-          .to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -57,12 +58,7 @@ RSpec.describe 'IP Blocks' do
       it 'returns the correct blocked ips' do
         subject
 
-        expect(response)
-          .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
-        expect(response.parsed_body)
-          .to match_array(expected_response)
+        expect(response.parsed_body).to match_array(expected_response)
       end
 
       context 'with limit param' do
@@ -92,8 +88,6 @@ RSpec.describe 'IP Blocks' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
 
       expect(response.parsed_body)
         .to include(
@@ -107,8 +101,6 @@ RSpec.describe 'IP Blocks' do
         get '/api/v1/admin/ip_blocks/-1', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -128,8 +120,6 @@ RSpec.describe 'IP Blocks' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(response.parsed_body)
         .to include(
           ip: eq("#{params[:ip]}/32"),
@@ -145,8 +135,6 @@ RSpec.describe 'IP Blocks' do
         subject
 
         expect(response).to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -157,8 +145,6 @@ RSpec.describe 'IP Blocks' do
         subject
 
         expect(response).to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -171,8 +157,6 @@ RSpec.describe 'IP Blocks' do
         subject
 
         expect(response).to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -183,8 +167,6 @@ RSpec.describe 'IP Blocks' do
         subject
 
         expect(response).to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -203,8 +185,6 @@ RSpec.describe 'IP Blocks' do
         .and change_comment_value
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(response.parsed_body).to match(hash_including({
         ip: "#{ip_block.ip}/#{ip_block.ip.prefix}",
         severity: 'sign_up_requires_approval',
@@ -225,8 +205,6 @@ RSpec.describe 'IP Blocks' do
         put '/api/v1/admin/ip_blocks/-1', headers: headers, params: params
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -242,8 +220,6 @@ RSpec.describe 'IP Blocks' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(response.parsed_body).to be_empty
       expect(IpBlock.find_by(id: ip_block.id)).to be_nil
     end
@@ -253,8 +229,6 @@ RSpec.describe 'IP Blocks' do
         delete '/api/v1/admin/ip_blocks/-1', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

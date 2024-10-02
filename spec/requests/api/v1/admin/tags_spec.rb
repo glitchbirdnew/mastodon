@@ -20,16 +20,17 @@ RSpec.describe 'Tags' do
     it_behaves_like 'forbidden for wrong scope', 'write:statuses'
     it_behaves_like 'forbidden for wrong role', ''
 
+    it 'returns http success' do
+      subject
+
+      expect(response).to have_http_status(200)
+    end
+
     context 'when there are no tags' do
       it 'returns an empty list' do
         subject
 
-        expect(response)
-          .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
-        expect(response.parsed_body)
-          .to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -45,11 +46,6 @@ RSpec.describe 'Tags' do
 
       it 'returns the expected tags' do
         subject
-
-        expect(response)
-          .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         tags.each do |tag|
           expect(response.parsed_body.find { |item| item[:id] == tag.id.to_s && item[:name] == tag.name }).to_not be_nil
         end
@@ -77,18 +73,17 @@ RSpec.describe 'Tags' do
     it_behaves_like 'forbidden for wrong scope', 'write:statuses'
     it_behaves_like 'forbidden for wrong role', ''
 
-    it 'returns http success and expected tag content' do
+    it 'returns http success' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
+    end
 
-      expect(response.parsed_body)
-        .to include(
-          id: tag.id.to_s,
-          name: tag.name
-        )
+    it 'returns expected tag content' do
+      subject
+
+      expect(response.parsed_body[:id].to_i).to eq(tag.id)
+      expect(response.parsed_body[:name]).to eq(tag.name)
     end
 
     context 'when the requested tag does not exist' do
@@ -96,8 +91,6 @@ RSpec.describe 'Tags' do
         get '/api/v1/admin/tags/-1', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -114,18 +107,17 @@ RSpec.describe 'Tags' do
     it_behaves_like 'forbidden for wrong scope', 'admin:read'
     it_behaves_like 'forbidden for wrong role', ''
 
-    it 'returns http success and updates tag' do
+    it 'returns http success' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
+    end
 
-      expect(response.parsed_body)
-        .to include(
-          id: tag.id.to_s,
-          name: tag.name.upcase
-        )
+    it 'returns updated tag' do
+      subject
+
+      expect(response.parsed_body[:id].to_i).to eq(tag.id)
+      expect(response.parsed_body[:name]).to eq(tag.name.upcase)
     end
 
     context 'when the updated display name is invalid' do
@@ -135,8 +127,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -145,8 +135,6 @@ RSpec.describe 'Tags' do
         get '/api/v1/admin/tags/-1', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

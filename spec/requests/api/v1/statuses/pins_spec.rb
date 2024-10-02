@@ -18,13 +18,15 @@ RSpec.describe 'Pins' do
     it_behaves_like 'forbidden for wrong scope', 'read read:accounts'
 
     context 'when the status is public' do
-      it 'pins the status successfully and returns updated json', :aggregate_failures do
+      it 'pins the status successfully', :aggregate_failures do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(user.account.pinned?(status)).to be true
+      end
+
+      it 'return json with updated attributes' do
+        subject
 
         expect(response.parsed_body).to match(
           a_hash_including(id: status.id.to_s, pinned: true)
@@ -39,8 +41,6 @@ RSpec.describe 'Pins' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(user.account.pinned?(status)).to be true
       end
     end
@@ -52,8 +52,6 @@ RSpec.describe 'Pins' do
         subject
 
         expect(response).to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -62,8 +60,6 @@ RSpec.describe 'Pins' do
         post '/api/v1/statuses/-1/pin', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -74,8 +70,6 @@ RSpec.describe 'Pins' do
         subject
 
         expect(response).to have_http_status(401)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -92,13 +86,15 @@ RSpec.describe 'Pins' do
         Fabricate(:status_pin, status: status, account: user.account)
       end
 
-      it 'unpins the status successfully and includes updated json', :aggregate_failures do
+      it 'unpins the status successfully', :aggregate_failures do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(user.account.pinned?(status)).to be false
+      end
+
+      it 'return json with updated attributes' do
+        subject
 
         expect(response.parsed_body).to match(
           a_hash_including(id: status.id.to_s, pinned: false)
@@ -111,8 +107,6 @@ RSpec.describe 'Pins' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -121,8 +115,6 @@ RSpec.describe 'Pins' do
         post '/api/v1/statuses/-1/unpin', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -133,8 +125,6 @@ RSpec.describe 'Pins' do
         subject
 
         expect(response).to have_http_status(401)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

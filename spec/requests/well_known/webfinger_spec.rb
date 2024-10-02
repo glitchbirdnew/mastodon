@@ -168,12 +168,10 @@ RSpec.describe 'The /.well-known/webfinger endpoint' do
     it 'returns avatar in response' do
       perform_request!
 
-      expect(response_avatar_link)
-        .to be_present
-        .and include(
-          type: eq(alice.avatar.content_type),
-          href: eq(Addressable::URI.new(host: Rails.configuration.x.local_domain, path: alice.avatar.to_s, scheme: 'https').to_s)
-        )
+      avatar_link = get_avatar_link(response.parsed_body)
+      expect(avatar_link).to_not be_nil
+      expect(avatar_link[:type]).to eq alice.avatar.content_type
+      expect(avatar_link[:href]).to eq Addressable::URI.new(host: Rails.configuration.x.local_domain, path: alice.avatar.to_s, scheme: 'https').to_s
     end
 
     context 'with limited federation mode' do
@@ -184,8 +182,8 @@ RSpec.describe 'The /.well-known/webfinger endpoint' do
       it 'does not return avatar in response' do
         perform_request!
 
-        expect(response_avatar_link)
-          .to be_nil
+        avatar_link = get_avatar_link(response.parsed_body)
+        expect(avatar_link).to be_nil
       end
     end
 
@@ -199,8 +197,8 @@ RSpec.describe 'The /.well-known/webfinger endpoint' do
       it 'does not return avatar in response' do
         perform_request!
 
-        expect(response_avatar_link)
-          .to be_nil
+        avatar_link = get_avatar_link(response.parsed_body)
+        expect(avatar_link).to be_nil
       end
     end
   end
@@ -214,8 +212,8 @@ RSpec.describe 'The /.well-known/webfinger endpoint' do
     end
 
     it 'does not return avatar in response' do
-      expect(response_avatar_link)
-        .to be_nil
+      avatar_link = get_avatar_link(response.parsed_body)
+      expect(avatar_link).to be_nil
     end
   end
 
@@ -249,9 +247,7 @@ RSpec.describe 'The /.well-known/webfinger endpoint' do
 
   private
 
-  def response_avatar_link
-    response
-      .parsed_body[:links]
-      .find { |link| link[:rel] == 'http://webfinger.net/rel/avatar' }
+  def get_avatar_link(json)
+    json[:links].find { |link| link[:rel] == 'http://webfinger.net/rel/avatar' }
   end
 end

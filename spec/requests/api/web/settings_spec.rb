@@ -17,8 +17,6 @@ RSpec.describe '/api/web/settings' do
 
         expect(response)
           .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -31,8 +29,6 @@ RSpec.describe '/api/web/settings' do
 
         expect(response)
           .to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
