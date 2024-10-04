@@ -69,6 +69,7 @@ class ActivityPub::ReferencesController < ActivityPub::BaseController
     ActivityPub::CollectionPresenter.new(
       type: :unordered,
       id: ActivityPub::TagManager.instance.references_uri_for(@status),
+      size: @status.status_referred_by_count,
       first: page
     )
   end
