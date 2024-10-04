@@ -10,7 +10,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import { debounce } from 'lodash';
 
+import { AltTextBadge } from 'mastodon/components/alt_text_badge';
 import { Blurhash } from 'mastodon/components/blurhash';
+import { formatTime } from 'mastodon/features/video';
 
 import { autoPlayGif, displayMedia, useBlurhash } from '../initial_state';
 
@@ -57,7 +59,7 @@ class Item extends PureComponent {
 
   hoverToPlay () {
     const { attachment } = this.props;
-    return !this.getAutoPlay() && attachment.get('type') === 'gifv';
+    return !this.getAutoPlay() && ['gifv', 'video'].includes(attachment.get('type'));
   }
 
   handleClick = (e) => {
@@ -95,24 +97,8 @@ class Item extends PureComponent {
       height = 50;
     }
 
-    if (size === 5 || size === 6 || size === 9 || size === 10 || size === 11 || size === 12) {
-      height = 33;
-    }
-    if (size === 7 || size === 8 || size === 13 || size === 14 || size === 15 || size === 16) {
-      height = 25;
-    }
-    if ((size === 5 && index === 4) || (size === 7 && index === 6)) {
-      width = 100;
-    }
-    if (size === 9) {
-      width = 33;
-    }
-    if (size === 10 || size === 11 || size === 12 || size === 13 || size === 14 || size === 15 || size === 16) {
-      width = 25;
-    }
-
     if (attachment.get('description')?.length > 0) {
-      badges.push(<span key='alt' className='media-gallery__alt__label'>ALT</span>);
+      badges.push(<AltTextBadge key='alt' description={attachment.get('description')} />);
     }
 
     const description = attachment.getIn(['translation', 'description']) || attachment.get('description');
@@ -166,10 +152,15 @@ class Item extends PureComponent {
           />
         </a>
       );
-    } else if (attachment.get('type') === 'gifv') {
+    } else if (['gifv', 'video'].includes(attachment.get('type'))) {
       const autoPlay = this.getAutoPlay();
+      const duration = attachment.getIn(['meta', 'original', 'duration']);
 
-      badges.push(<span key='gif' className='media-gallery__gifv__label'>GIF</span>);
+      if (attachment.get('type') === 'gifv') {
+        badges.push(<span key='gif' className='media-gallery__alt__label media-gallery__alt__label--non-interactive'>GIF</span>);
+      } else {
+        badges.push(<span key='video' className='media-gallery__alt__label media-gallery__alt__label--non-interactive'>{formatTime(Math.floor(duration))}</span>);
+      }
 
       thumbnail = (
         <div className={classNames('media-gallery__gifv', { autoplay: autoPlay })}>
@@ -183,6 +174,7 @@ class Item extends PureComponent {
             onClick={this.handleClick}
             onMouseEnter={this.handleMouseEnter}
             onMouseLeave={this.handleMouseLeave}
+            onLoadedData={this.handleImageLoad}
             autoPlay={autoPlay}
             playsInline
             loop
@@ -229,7 +221,6 @@ class MediaGallery extends PureComponent {
     visible: PropTypes.bool,
     autoplay: PropTypes.bool,
     onToggleVisibility: PropTypes.func,
-    compact: PropTypes.bool,
   };
 
   state = {
@@ -300,7 +291,7 @@ class MediaGallery extends PureComponent {
   }
 
   render () {
-    const { media, lang, sensitive, defaultWidth, autoplay, compact } = this.props;
+    const { media, lang, sensitive, defaultWidth, autoplay } = this.props;
     const { visible } = this.state;
     const width = this.state.width || defaultWidth;
 
@@ -343,28 +334,15 @@ class MediaGallery extends PureComponent {
       );
     }
 
-    const rowClass = (size === 5 || size === 6 || size === 9 || size === 10 || size === 11 || size === 12) ? 'media-gallery--row3' :
-      (size === 7 || size === 8 || size === 13 || size === 14 || size === 15 || size === 16) ? 'media-gallery--row4' :
-        'media-gallery--row2';
-    const columnClass = (size === 9) ? 'media-gallery--column3' :
-      (size === 10 || size === 11 || size === 12 || size === 13 || size === 14 || size === 15 || size === 16) ? 'media-gallery--column4' :
-        'media-gallery--column2';
-    const compactClass = compact ? 'media-gallery__compact' : null;
-
-    const classList = ['media-gallery', `media-gallery--layout-${size}`];
-    if (size > 4) {
-      classList.push(rowClass, columnClass, compactClass);
-    }
-
     return (
-      <div className={classNames(classList)} style={style} ref={this.handleRef}>
+      <div className={`media-gallery media-gallery--layout-${size}`} style={style} ref={this.handleRef}>
+        {children}
+
         {(!visible || uncached) && (
           <div className={classNames('spoiler-button', { 'spoiler-button--click-thru': uncached })}>
             {spoilerButton}
           </div>
         )}
-
-        {children}
 
         {(visible && !uncached) && (
           <div className='media-gallery__actions'>
