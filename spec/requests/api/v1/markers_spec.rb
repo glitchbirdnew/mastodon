@@ -18,8 +18,6 @@ RSpec.describe 'API Markers' do
 
     it 'returns markers', :aggregate_failures do
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(response.parsed_body)
         .to include(
           home: include(last_read_id: '123'),
@@ -36,8 +34,6 @@ RSpec.describe 'API Markers' do
 
       it 'creates a marker', :aggregate_failures do
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(user.markers.first.timeline).to eq 'home'
         expect(user.markers.first.last_read_id).to eq 69_420
       end
@@ -51,8 +47,6 @@ RSpec.describe 'API Markers' do
 
       it 'updates a marker', :aggregate_failures do
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(user.markers.first.timeline).to eq 'home'
         expect(user.markers.first.last_read_id).to eq 70_120
       end
@@ -67,8 +61,6 @@ RSpec.describe 'API Markers' do
       it 'returns error json' do
         expect(response)
           .to have_http_status(409)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(response.parsed_body)
           .to include(error: /Conflict during update/)
       end

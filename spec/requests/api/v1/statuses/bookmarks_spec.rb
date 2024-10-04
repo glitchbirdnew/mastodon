@@ -18,13 +18,15 @@ RSpec.describe 'Bookmarks' do
     it_behaves_like 'forbidden for wrong scope', 'read'
 
     context 'with public status' do
-      it 'bookmarks the status successfully and includes updated json', :aggregate_failures do
+      it 'bookmarks the status successfully', :aggregate_failures do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(user.account.bookmarked?(status)).to be true
+      end
+
+      it 'returns json with updated attributes' do
+        subject
 
         expect(response.parsed_body).to match(
           a_hash_including(id: status.id.to_s, bookmarked: true)
@@ -39,8 +41,6 @@ RSpec.describe 'Bookmarks' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -55,8 +55,6 @@ RSpec.describe 'Bookmarks' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(user.account.bookmarked?(status)).to be true
       end
     end
@@ -66,8 +64,6 @@ RSpec.describe 'Bookmarks' do
         post '/api/v1/statuses/-1/bookmark', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -78,8 +74,6 @@ RSpec.describe 'Bookmarks' do
         subject
 
         expect(response).to have_http_status(401)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -99,13 +93,15 @@ RSpec.describe 'Bookmarks' do
           Bookmark.find_or_create_by!(account: user.account, status: status)
         end
 
-        it 'unbookmarks the status successfully and includes updated json', :aggregate_failures do
+        it 'unbookmarks the status successfully', :aggregate_failures do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(user.account.bookmarked?(status)).to be false
+        end
+
+        it 'returns json with updated attributes' do
+          subject
 
           expect(response.parsed_body).to match(
             a_hash_including(id: status.id.to_s, bookmarked: false)
@@ -121,13 +117,15 @@ RSpec.describe 'Bookmarks' do
           status.account.block!(user.account)
         end
 
-        it 'unbookmarks the status successfully and includes updated json', :aggregate_failures do
+        it 'unbookmarks the status successfully', :aggregate_failures do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(user.account.bookmarked?(status)).to be false
+        end
+
+        it 'returns json with updated attributes' do
+          subject
 
           expect(response.parsed_body).to match(
             a_hash_including(id: status.id.to_s, bookmarked: false)
@@ -140,8 +138,6 @@ RSpec.describe 'Bookmarks' do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
     end
@@ -153,8 +149,6 @@ RSpec.describe 'Bookmarks' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

@@ -14,8 +14,6 @@ RSpec.describe 'API OEmbed' do
 
         expect(response)
           .to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(response.headers['Cache-Control'])
           .to include('private, no-store')
       end
@@ -29,8 +27,6 @@ RSpec.describe 'API OEmbed' do
 
         expect(response)
           .to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

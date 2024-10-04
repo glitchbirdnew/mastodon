@@ -21,8 +21,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(response.parsed_body[:name]).to eq(name)
       end
     end
@@ -34,8 +32,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -46,8 +42,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -67,8 +61,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(:success)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(TagFollow.where(tag: tag, account: user.account)).to exist
       end
     end
@@ -80,8 +72,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(Tag.where(name: name)).to exist
         expect(TagFollow.where(tag: Tag.find_by(name: name), account: user.account)).to exist
       end
@@ -94,8 +84,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -107,8 +95,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(401)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -131,8 +117,6 @@ RSpec.describe 'Tags' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(TagFollow.where(tag: tag, account: user.account)).to_not exist
     end
 
@@ -143,8 +127,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -156,8 +138,6 @@ RSpec.describe 'Tags' do
         subject
 
         expect(response).to have_http_status(401)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

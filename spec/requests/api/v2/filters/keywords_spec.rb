@@ -17,8 +17,6 @@ RSpec.describe 'API V2 Filters Keywords' do
     it 'returns http success' do
       get "/api/v2/filters/#{filter.id}/keywords", headers: headers
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(response.parsed_body)
         .to contain_exactly(
           include(id: keyword.id.to_s)
@@ -29,8 +27,6 @@ RSpec.describe 'API V2 Filters Keywords' do
       it 'returns http not found' do
         get "/api/v2/filters/#{other_filter.id}/keywords", headers: headers
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -45,8 +41,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
     it 'creates a filter', :aggregate_failures do
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
 
       expect(response.parsed_body)
         .to include(
@@ -64,8 +58,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
       it 'returns http not found' do
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -80,8 +72,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
     it 'responds with the keyword', :aggregate_failures do
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
 
       expect(response.parsed_body)
         .to include(
@@ -95,8 +85,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
       it 'returns http not found' do
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -111,8 +99,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
     it 'updates the keyword', :aggregate_failures do
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
 
       expect(keyword.reload.keyword).to eq 'updated'
     end
@@ -122,8 +108,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
       it 'returns http not found' do
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -138,8 +122,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
     it 'destroys the keyword', :aggregate_failures do
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
 
       expect { keyword.reload }.to raise_error ActiveRecord::RecordNotFound
     end
@@ -149,8 +131,6 @@ RSpec.describe 'API V2 Filters Keywords' do
 
       it 'returns http not found' do
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

@@ -14,6 +14,8 @@ class ActivityPub::CollectionSerializer < ActivityPub::Serializer
     case model.class.name
     when 'Status'
       ActivityPub::NoteSerializer
+    when 'Device'
+      ActivityPub::DeviceSerializer
     when 'FeaturedTag'
       ActivityPub::HashtagSerializer
     when 'ActivityPub::CollectionPresenter'

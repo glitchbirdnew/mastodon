@@ -22,6 +22,8 @@ class ActivityPub::CollectionsController < ActivityPub::BaseController
       @items = @items.map { |item| item.distributable? ? item : ActivityPub::TagManager.instance.uri_for(item) }
     when 'tags'
       @items = for_signed_account { @account.featured_tags }
+    when 'devices'
+      @items = @account.devices
     else
       not_found
     end
@@ -29,7 +31,7 @@ class ActivityPub::CollectionsController < ActivityPub::BaseController
 
   def set_size
     case params[:id]
-    when 'featured', 'tags'
+    when 'featured', 'devices', 'tags'
       @size = @items.size
     else
       not_found
@@ -40,7 +42,7 @@ class ActivityPub::CollectionsController < ActivityPub::BaseController
     case params[:id]
     when 'featured'
       @type = :ordered
-    when 'tags'
+    when 'devices', 'tags'
       @type = :unordered
     else
       not_found

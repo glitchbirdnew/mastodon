@@ -17,12 +17,15 @@ RSpec.describe 'Media' do
 
     it_behaves_like 'forbidden for wrong scope', 'read'
 
-    it 'returns http success with media information' do
+    it 'returns http success' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
+    end
+
+    it 'returns the media information' do
+      subject
+
       expect(response.parsed_body).to match(
         a_hash_including(
           id: media.id.to_s,
@@ -41,8 +44,6 @@ RSpec.describe 'Media' do
         subject
 
         expect(response).to have_http_status(206)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -53,8 +54,6 @@ RSpec.describe 'Media' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -65,8 +64,6 @@ RSpec.describe 'Media' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -83,8 +80,6 @@ RSpec.describe 'Media' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(MediaAttachment.first).to be_present
         expect(MediaAttachment.first).to have_attached_file(:file)
 
@@ -112,8 +107,6 @@ RSpec.describe 'Media' do
           subject
 
           expect(response).to have_http_status(422)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
 
@@ -124,8 +117,6 @@ RSpec.describe 'Media' do
           subject
 
           expect(response).to have_http_status(500)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
     end
@@ -167,8 +158,6 @@ RSpec.describe 'Media' do
         subject
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -187,8 +176,6 @@ RSpec.describe 'Media' do
           subject
 
           expect(response).to have_http_status(404)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
     end

@@ -43,7 +43,10 @@ class AccountNavigation extends PureComponent {
     }
 
     return (
-      <FeaturedTags accountId={accountId} tagged={tagged} />
+      <>
+        <div className='flex-spacer' />
+        <FeaturedTags accountId={accountId} tagged={tagged} />
+      </>
     );
   }
 

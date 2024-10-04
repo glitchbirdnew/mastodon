@@ -1,5 +1,5 @@
 import type { ChangeEventHandler } from 'react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -22,8 +22,6 @@ import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import { RadioButton } from 'mastodon/components/radio_button';
 import ScrollContainer from 'mastodon/containers/scroll_container';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
-
-import { useSearchParam } from '../../../hooks/useSearchParam';
 
 import { AccountCard } from './components/account_card';
 
@@ -49,19 +47,18 @@ export const Directory: React.FC<{
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const [state, setState] = useState<{
+    order: string | null;
+    local: boolean | null;
+  }>({
+    order: null,
+    local: null,
+  });
+
   const column = useRef<Column>(null);
 
-  const [orderParam, setOrderParam] = useSearchParam('order');
-  const [localParam, setLocalParam] = useSearchParam('local');
-
-  let localParamBool: boolean | undefined;
-
-  if (localParam === 'false') {
-    localParamBool = false;
-  }
-
-  const order = orderParam ?? params?.order ?? 'active';
-  const local = localParamBool ?? params?.local ?? true;
+  const order = state.order ?? params?.order ?? 'active';
+  const local = state.local ?? params?.local ?? false;
 
   const handlePin = useCallback(() => {
     if (columnId) {
@@ -104,10 +101,10 @@ export const Directory: React.FC<{
       if (columnId) {
         dispatch(changeColumnParams(columnId, ['order'], e.target.value));
       } else {
-        setOrderParam(e.target.value);
+        setState((s) => ({ order: e.target.value, local: s.local }));
       }
     },
-    [dispatch, columnId, setOrderParam],
+    [dispatch, columnId],
   );
 
   const handleChangeLocal = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -116,13 +113,11 @@ export const Directory: React.FC<{
         dispatch(
           changeColumnParams(columnId, ['local'], e.target.value === '1'),
         );
-      } else if (e.target.value === '1') {
-        setLocalParam('true');
       } else {
-        setLocalParam('false');
+        setState((s) => ({ local: e.target.value === '1', order: s.order }));
       }
     },
-    [dispatch, columnId, setLocalParam],
+    [dispatch, columnId],
   );
 
   const handleLoadMore = useCallback(() => {

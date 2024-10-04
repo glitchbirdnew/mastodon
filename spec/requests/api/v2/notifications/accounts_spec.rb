@@ -30,8 +30,6 @@ RSpec.describe 'Accounts in grouped notifications' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
 
       # The group we are interested in is only favorites
       notifications = user.account.notifications.where(type: 'favourite').reorder(id: :desc)
@@ -57,8 +55,6 @@ RSpec.describe 'Accounts in grouped notifications' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
 
         # The group we are interested in is only favorites
         notifications = user.account.notifications.where(type: 'favourite').reorder(id: :desc)

@@ -68,15 +68,10 @@ function dispatchAssociatedRecords(
     dispatch(importFetchedStatuses(fetchedStatuses));
 }
 
-const supportedGroupedNotificationTypes = ['favourite', 'reblog'];
-
 export const fetchNotifications = createDataLoadingThunk(
   'notificationGroups/fetch',
   async (_params, { getState }) =>
-    apiFetchNotificationGroups({
-      grouped_types: supportedGroupedNotificationTypes,
-      exclude_types: getExcludedTypes(getState()),
-    }),
+    apiFetchNotificationGroups({ exclude_types: getExcludedTypes(getState()) }),
   ({ notifications, accounts, statuses }, { dispatch }) => {
     dispatch(importFetchedAccounts(accounts));
     dispatch(importFetchedStatuses(statuses));
@@ -98,7 +93,6 @@ export const fetchNotificationsGap = createDataLoadingThunk(
   'notificationGroups/fetchGap',
   async (params: { gap: NotificationGap }, { getState }) =>
     apiFetchNotificationGroups({
-      grouped_types: supportedGroupedNotificationTypes,
       max_id: params.gap.maxId,
       exclude_types: getExcludedTypes(getState()),
     }),
@@ -115,7 +109,6 @@ export const pollRecentNotifications = createDataLoadingThunk(
   'notificationGroups/pollRecentNotifications',
   async (_params, { getState }) => {
     return apiFetchNotificationGroups({
-      grouped_types: supportedGroupedNotificationTypes,
       max_id: undefined,
       exclude_types: getExcludedTypes(getState()),
       // In slow mode, we don't want to include notifications that duplicate the already-displayed ones

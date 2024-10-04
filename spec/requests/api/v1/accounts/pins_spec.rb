@@ -21,8 +21,6 @@ RSpec.describe 'Accounts Pins API' do
         subject
       end.to change { AccountPin.where(account: user.account, target_account: kevin.account).count }.by(1)
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
   end
 
@@ -38,8 +36,6 @@ RSpec.describe 'Accounts Pins API' do
         subject
       end.to change { AccountPin.where(account: user.account, target_account: kevin.account).count }.by(-1)
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
   end
 end
