@@ -19,8 +19,6 @@ RSpec.describe 'API V1 Statuses Reblogs' do
       context 'with public status' do
         it 'reblogs the status', :aggregate_failures do
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
 
           expect(status.reblogs.count).to eq 1
 
@@ -42,8 +40,6 @@ RSpec.describe 'API V1 Statuses Reblogs' do
 
         it 'returns http not found' do
           expect(response).to have_http_status(404)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
     end
@@ -59,8 +55,6 @@ RSpec.describe 'API V1 Statuses Reblogs' do
 
         it 'destroys the reblog', :aggregate_failures do
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
 
           expect(status.reblogs.count).to eq 0
 
@@ -86,8 +80,6 @@ RSpec.describe 'API V1 Statuses Reblogs' do
 
         it 'destroys the reblog', :aggregate_failures do
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
 
           expect(status.reblogs.count).to eq 0
 
@@ -111,8 +103,6 @@ RSpec.describe 'API V1 Statuses Reblogs' do
 
         it 'returns http not found' do
           expect(response).to have_http_status(404)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
     end

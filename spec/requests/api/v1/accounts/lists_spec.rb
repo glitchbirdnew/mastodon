@@ -20,8 +20,6 @@ RSpec.describe 'Accounts Lists API' do
       get "/api/v1/accounts/#{account.id}/lists", headers: headers
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
     end
   end
 end

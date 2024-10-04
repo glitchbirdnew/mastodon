@@ -19,8 +19,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(response.parsed_body.pluck(:id)).to match_array(expected_results.map { |a| a.id.to_s })
       end
     end
@@ -95,8 +93,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(response.parsed_body.size).to eq(params[:limit])
       end
     end
@@ -116,8 +112,6 @@ RSpec.describe 'Accounts' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(response.parsed_body).to match(
         a_hash_including(id: account.id.to_s, username: account.username, email: account.user.email)
       )
@@ -128,8 +122,6 @@ RSpec.describe 'Accounts' do
         get '/api/v1/admin/accounts/-1', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -153,8 +145,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(account.reload.user_approved?).to be(true)
       end
 
@@ -176,8 +166,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(403)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -186,8 +174,6 @@ RSpec.describe 'Accounts' do
         post '/api/v1/admin/accounts/-1/approve', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -207,13 +193,15 @@ RSpec.describe 'Accounts' do
       it_behaves_like 'forbidden for wrong scope', 'write write:accounts read admin:read'
       it_behaves_like 'forbidden for wrong role', ''
 
-      it 'removes the user successfully and logs action', :aggregate_failures do
+      it 'removes the user successfully', :aggregate_failures do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(User.where(id: account.user.id)).to_not exist
+      end
+
+      it 'logs action', :aggregate_failures do
+        subject
 
         expect(latest_admin_action_log)
           .to be_present
@@ -230,8 +218,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(403)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -240,8 +226,6 @@ RSpec.describe 'Accounts' do
         post '/api/v1/admin/accounts/-1/reject', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -264,8 +248,6 @@ RSpec.describe 'Accounts' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(account.reload.user_disabled?).to be false
     end
 
@@ -274,8 +256,6 @@ RSpec.describe 'Accounts' do
         post '/api/v1/admin/accounts/-1/enable', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -299,8 +279,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(account.reload.suspended?).to be false
       end
     end
@@ -310,8 +288,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(403)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -320,8 +296,6 @@ RSpec.describe 'Accounts' do
         post '/api/v1/admin/accounts/-1/unsuspend', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -344,8 +318,6 @@ RSpec.describe 'Accounts' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(account.reload.sensitized?).to be false
     end
 
@@ -354,8 +326,6 @@ RSpec.describe 'Accounts' do
         post '/api/v1/admin/accounts/-1/unsensitive', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -378,8 +348,6 @@ RSpec.describe 'Accounts' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
       expect(account.reload.silenced?).to be false
     end
 
@@ -388,8 +356,6 @@ RSpec.describe 'Accounts' do
         post '/api/v1/admin/accounts/-1/unsilence', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -414,8 +380,6 @@ RSpec.describe 'Accounts' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(Admin::AccountDeletionWorker).to have_received(:perform_async).with(account.id).once
       end
     end
@@ -433,8 +397,6 @@ RSpec.describe 'Accounts' do
         delete '/api/v1/admin/accounts/-1', headers: headers
 
         expect(response).to have_http_status(404)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end

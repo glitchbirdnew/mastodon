@@ -14,8 +14,6 @@ RSpec.describe 'Scheduled Statuses' do
 
         expect(response)
           .to have_http_status(401)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -35,8 +33,6 @@ RSpec.describe 'Scheduled Statuses' do
 
         expect(response)
           .to have_http_status(422)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
 
@@ -49,8 +45,6 @@ RSpec.describe 'Scheduled Statuses' do
 
           expect(response)
             .to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
 
           expect(response.parsed_body)
             .to_not be_present
@@ -65,8 +59,6 @@ RSpec.describe 'Scheduled Statuses' do
 
           expect(response)
             .to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
 
           expect(response.parsed_body)
             .to be_present

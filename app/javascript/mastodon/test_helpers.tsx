@@ -8,14 +8,6 @@ import { render as rtlRender } from '@testing-library/react';
 
 import { IdentityContext } from './identity_context';
 
-beforeEach(() => {
-  global.requestIdleCallback = jest
-    .fn()
-    .mockImplementation((fn: () => void) => {
-      fn();
-    });
-});
-
 function render(
   ui: React.ReactElement,
   {

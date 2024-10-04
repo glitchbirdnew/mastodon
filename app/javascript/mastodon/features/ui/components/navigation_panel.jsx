@@ -137,17 +137,14 @@ class NavigationPanel extends Component {
     
     let banner = undefined;
 
-    if (transientSingleColumn) {
-      banner = (
-        <div className='switch-to-advanced'>
-          {intl.formatMessage(messages.openedInClassicInterface)}
-          {" "}
-          <a href={`/deck${location.pathname}`} className='switch-to-advanced__toggle'>
-            {intl.formatMessage(messages.advancedInterface)}
-          </a>
-        </div>
-      );
-    }
+    if(transientSingleColumn)
+      banner = (<div className='switch-to-advanced'>
+        {intl.formatMessage(messages.openedInClassicInterface)}
+        {" "}
+        <a href={`/deck${location.pathname}`} className='switch-to-advanced__toggle'>
+          {intl.formatMessage(messages.advancedInterface)}
+        </a>
+      </div>);
 
     return (
       <div className='navigation-panel'>
@@ -160,7 +157,6 @@ class NavigationPanel extends Component {
             {banner}
           </div>
         }
-
         <div className='navigation-panel__menu'>
           {signedIn && (
             <>
@@ -229,10 +225,76 @@ class NavigationPanel extends Component {
           <div className='navigation-panel__legal'>
             <hr />
             <ColumnLink transparent to='/about' icon='ellipsis-h' iconComponent={MoreHorizIcon} text={intl.formatMessage(messages.about)} />
-          </div>
-        </div>
+        {signedIn && (
+          <>
+            <ColumnLink transparent to='/home' icon='home' iconComponent={HomeIcon} activeIconComponent={HomeActiveIcon} text={intl.formatMessage(messages.home)} />
+            <NotificationsLink />
+          </>
+        )}
 
-        <div className='flex-spacer' />
+        {signedIn && enableLocalTimeline && (
+          <ColumnLink transparent to='/public/local/fixed' icon='users' iconComponent={PeopleIcon} text={intl.formatMessage(messages.local)} />
+        )}
+
+        {signedIn && enableDtlMenu && dtlTag && (
+          <ColumnLink transparent to={`/tags/${dtlTag}`} icon='users' iconComponent={PeopleIcon} text={intl.formatMessage(messages.deepLocal)} />
+        )}
+
+        {!signedIn && explorer}
+
+        {signedIn && (
+          <ColumnLink transparent to='/public' isActive={this.isFirehoseActive} icon='globe' iconComponent={PublicIcon} text={intl.formatMessage(messages.firehose)} />
+        )}
+
+        {(!signedIn && timelinePreview) && (
+          <ColumnLink transparent to={enableLocalTimeline ? '/public/local' : '/public'} isActive={this.isFirehoseActive} icon='globe' iconComponent={PublicIcon} text={intl.formatMessage(messages.firehose)} />
+        )}
+
+        {signedIn && (
+          <>
+            <ListPanel />
+            <hr />
+          </>
+        )}
+
+        {signedIn && (
+          <>
+            <ColumnLink transparent to='/lists' icon='list-ul' iconComponent={ListAltIcon} activeIconComponent={ListAltActiveIcon} text={intl.formatMessage(messages.lists)} />
+            <ColumnLink transparent to='/antennasw' icon='wifi' iconComponent={AntennaIcon} text={intl.formatMessage(messages.antennas)} isActive={this.isAntennasActive} />
+            <ColumnLink transparent to='/circles' icon='user-circle' iconComponent={CirclesIcon} text={intl.formatMessage(messages.circles)} />
+            <ColumnLink transparent to='/followed_tags' icon='tag' iconComponent={HashtagIcon} text={intl.formatMessage(messages.followed_tags)} />
+            <ColumnLink transparent to='/directory' icon='group' iconComponent={DirectoryIcon} text={intl.formatMessage(messages.directory)} />
+            <FollowRequestsLink />
+            <ColumnLink transparent to='/conversations' icon='at' iconComponent={AlternateEmailIcon} text={intl.formatMessage(messages.direct)} />
+          </>
+        )}
+
+        {signedIn && explorer}
+
+        {signedIn && (
+          <>
+            <ColumnLink transparent to='/bookmark_categories' icon='bookmarks' iconComponent={BookmarksIcon} activeIconComponent={BookmarksActiveIcon} text={intl.formatMessage(messages.bookmarks)} />
+            { !isHideItem('favourite_menu') && <ColumnLink transparent to='/favourites' icon='star' iconComponent={StarIcon} activeIconComponent={StarActiveIcon} text={intl.formatMessage(messages.favourites)} /> }
+            <hr />
+
+            <ColumnLink transparent href='/settings/preferences' icon='cog' iconComponent={SettingsIcon} text={intl.formatMessage(messages.preferences)} />
+
+            {canManageReports(permissions) && <ColumnLink transparent href='/admin/reports' icon='flag' iconComponent={ModerationIcon} text={intl.formatMessage(messages.moderation)} />}
+            {canViewAdminDashboard(permissions) && <ColumnLink transparent href='/admin/dashboard' icon='tachometer' iconComponent={AdministrationIcon} text={intl.formatMessage(messages.administration)} />}
+          </>
+        )}
+
+        {!signedIn && (
+          <div className='navigation-panel__sign-in-banner'>
+            <hr />
+            { disabledAccountId ? <DisabledAccountBanner /> : <SignInBanner /> }
+          </div>
+        )}
+
+        <div className='navigation-panel__legal'>
+          <hr />
+          <ColumnLink transparent to='/about' icon='ellipsis-h' iconComponent={MoreHorizIcon} text={intl.formatMessage(messages.about)} />
+        </div>
 
         <NavigationPortal />
       </div>

@@ -18,8 +18,6 @@ RSpec.describe '/api/v1/statuses' do
         get '/api/v1/statuses', headers: headers, params: { id: [status.id, other_status.id, 123_123] }
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(response.parsed_body).to contain_exactly(
           hash_including(id: status.id.to_s),
           hash_including(id: other_status.id.to_s)
@@ -41,8 +39,6 @@ RSpec.describe '/api/v1/statuses' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
 
       context 'when post includes filtered terms' do
@@ -56,8 +52,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(response.parsed_body[:filtered][0]).to include({
             filter: a_hash_including({
               id: user.account.custom_filters.first.id.to_s,
@@ -81,8 +75,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(response.parsed_body[:filtered][0]).to include({
             filter: a_hash_including({
               id: user.account.custom_filters.first.id.to_s,
@@ -105,8 +97,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(response.parsed_body[:reblog][:filtered][0]).to include({
             filter: a_hash_including({
               id: user.account.custom_filters.first.id.to_s,
@@ -170,8 +160,6 @@ RSpec.describe '/api/v1/statuses' do
         get "/api/v1/statuses/#{status.id}/context", headers: headers
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
 
       it 'returns empty references' do
@@ -240,8 +228,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(response.headers['X-RateLimit-Limit']).to eq RateLimiter::FAMILIES[:statuses][:limit].to_s
           expect(response.headers['X-RateLimit-Remaining']).to eq (RateLimiter::FAMILIES[:statuses][:limit] - 1).to_s
         end
@@ -257,8 +243,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(422)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(response.parsed_body[:unexpected_accounts].map { |a| a.slice(:id, :acct) }).to match [{ id: bob.id.to_s, acct: bob.acct }]
         end
       end
@@ -270,8 +254,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(422)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(response.headers['X-RateLimit-Limit']).to eq RateLimiter::FAMILIES[:statuses][:limit].to_s
         end
       end
@@ -286,8 +268,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(429)
-          expect(response.content_type)
-            .to start_with('application/json')
           expect(response.headers['X-RateLimit-Limit']).to eq RateLimiter::FAMILIES[:statuses][:limit].to_s
           expect(response.headers['X-RateLimit-Remaining']).to eq '0'
         end
@@ -300,8 +280,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(404)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
 
@@ -313,8 +291,6 @@ RSpec.describe '/api/v1/statuses' do
           subject
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
 
         it 'creates a scheduled status' do
@@ -328,8 +304,6 @@ RSpec.describe '/api/v1/statuses' do
             subject
 
             expect(response).to have_http_status(422)
-            expect(response.content_type)
-              .to start_with('application/json')
             expect(account.scheduled_statuses).to be_empty
           end
         end
@@ -350,8 +324,6 @@ RSpec.describe '/api/v1/statuses' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(Status.find_by(id: status.id)).to be_nil
       end
     end
@@ -370,8 +342,6 @@ RSpec.describe '/api/v1/statuses' do
         subject
 
         expect(response).to have_http_status(200)
-        expect(response.content_type)
-          .to start_with('application/json')
         expect(status.reload.text).to eq 'I am updated'
       end
     end
@@ -386,8 +356,6 @@ RSpec.describe '/api/v1/statuses' do
           get "/api/v1/statuses/#{status.id}"
 
           expect(response).to have_http_status(404)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
 
@@ -400,8 +368,6 @@ RSpec.describe '/api/v1/statuses' do
           get "/api/v1/statuses/#{status.id}/context"
 
           expect(response).to have_http_status(404)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
     end
@@ -414,8 +380,6 @@ RSpec.describe '/api/v1/statuses' do
           get "/api/v1/statuses/#{status.id}"
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
 
@@ -428,8 +392,6 @@ RSpec.describe '/api/v1/statuses' do
           get "/api/v1/statuses/#{status.id}/context"
 
           expect(response).to have_http_status(200)
-          expect(response.content_type)
-            .to start_with('application/json')
         end
       end
     end

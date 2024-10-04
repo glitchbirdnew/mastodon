@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useRouteMatch, NavLink } from 'react-router-dom';
 
-import { Icon } from 'mastodon/components/icon';
+import { Icon }  from 'mastodon/components/icon';
 
-const ColumnLink = ({ icon, activeIcon, iconComponent, activeIconComponent, text, to, href, method, badge, transparent, optional, children, ...other }) => {
+const ColumnLink = ({ icon, activeIcon, iconComponent, activeIconComponent, text, to, href, method, badge, transparent, children, ...other }) => {
   const match = useRouteMatch(to);
-  const className = classNames('column-link', { 'column-link--transparent': transparent, 'column-link--optional': optional });
+  const className = classNames('column-link', { 'column-link--transparent': transparent });
   const badgeElement = typeof badge !== 'undefined' ? <span className='column-link__badge'>{badge}</span> : null;
   const iconElement = (typeof icon === 'string' || iconComponent) ? <Icon id={icon} icon={iconComponent} className='column-link__icon' /> : icon;
   const activeIconElement = activeIcon ?? (activeIconComponent ? <Icon id={icon} icon={activeIconComponent} className='column-link__icon' /> : iconElement);
@@ -46,7 +46,6 @@ ColumnLink.propTypes = {
   badge: PropTypes.node,
   transparent: PropTypes.bool,
   children: PropTypes.any,
-  optional: PropTypes.bool,
 };
 
 export default ColumnLink;

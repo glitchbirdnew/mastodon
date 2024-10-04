@@ -23,8 +23,8 @@
 
 %hr/
 
-= simple_form_for @application, url: settings_application_path(@application), method: :put do |form|
-  = render form
+= simple_form_for @application, url: settings_application_path(@application), method: :put do |f|
+  = render 'fields', f: f
 
   .actions
-    = form.button :button, t('generic.save_changes'), type: :submit
+    = f.button :button, t('generic.save_changes'), type: :submit

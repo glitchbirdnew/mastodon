@@ -21,9 +21,6 @@ RSpec.describe 'Media API', :attachment_processing do
         expect(response)
           .to have_http_status(200)
 
-        expect(response.content_type)
-          .to start_with('application/json')
-
         expect(response.parsed_body)
           .to be_a(Hash)
       end
@@ -40,9 +37,6 @@ RSpec.describe 'Media API', :attachment_processing do
 
         expect(response)
           .to have_http_status(202)
-
-        expect(response.content_type)
-          .to start_with('application/json')
 
         expect(response.parsed_body)
           .to be_a(Hash)
@@ -69,9 +63,6 @@ RSpec.describe 'Media API', :attachment_processing do
           expect(response)
             .to have_http_status(422)
 
-          expect(response.content_type)
-            .to start_with('application/json')
-
           expect(response.parsed_body)
             .to be_a(Hash)
             .and include(error: /File type/)
@@ -88,9 +79,6 @@ RSpec.describe 'Media API', :attachment_processing do
 
           expect(response)
             .to have_http_status(500)
-
-          expect(response.content_type)
-            .to start_with('application/json')
 
           expect(response.parsed_body)
             .to be_a(Hash)

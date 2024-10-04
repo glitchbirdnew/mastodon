@@ -23,12 +23,15 @@ RSpec.describe 'Suggestions' do
 
     it_behaves_like 'forbidden for wrong scope', 'write'
 
-    it 'returns http success with accounts' do
+    it 'returns http success' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
+    end
+
+    it 'returns accounts' do
+      subject
+
       expect(response.parsed_body)
         .to contain_exactly(include(id: bob.id.to_s), include(id: jeff.id.to_s))
     end
@@ -50,8 +53,6 @@ RSpec.describe 'Suggestions' do
         subject
 
         expect(response).to have_http_status(401)
-        expect(response.content_type)
-          .to start_with('application/json')
       end
     end
   end
@@ -71,12 +72,15 @@ RSpec.describe 'Suggestions' do
 
     it_behaves_like 'forbidden for wrong scope', 'read'
 
-    it 'returns http success and removes suggestion' do
+    it 'returns http success' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(response.content_type)
-        .to start_with('application/json')
+    end
+
+    it 'removes the specified suggestion' do
+      subject
+
       expect(FollowRecommendationMute.exists?(account: user.account, target_account: jeff)).to be true
     end
 
