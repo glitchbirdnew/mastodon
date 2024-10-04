@@ -58,7 +58,7 @@ module Mastodon
     end
 
     def build_metadata
-      ['bar', to_s_of_kmyblue, build_metadata_of_mastodon].compact.join('.')
+      ['kmyblue', to_s_of_kmyblue, build_metadata_of_mastodon].compact.join('.')
     end
 
     def build_metadata_of_mastodon
@@ -100,7 +100,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'mastodon/mastodon')
+      ENV.fetch('GITHUB_REPOSITORY', 'kmycode/mastodon')
     end
 
     def source_base_url

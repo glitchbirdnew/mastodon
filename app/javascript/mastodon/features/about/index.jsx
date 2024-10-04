@@ -39,7 +39,7 @@ const messages = defineMessages({
   emojiReaction: { id: 'status.emoji_reaction', defaultMessage: 'Emoji reaction' },
   enabled: { id: 'about.enabled', defaultMessage: 'Enabled' },
   disabled: { id: 'about.disabled', defaultMessage: 'Disabled' },
-  capabilities: { id: 'about.kmyblue_capabilities', defaultMessage: 'Server Features' },
+  capabilities: { id: 'about.kmyblue_capabilities', defaultMessage: 'Features available in this server' },
 });
 
 const severityMessages = {
@@ -229,7 +229,7 @@ class About extends PureComponent {
           </Section>
 
           <Section title={intl.formatMessage(messages.capabilities)}>
-            <p><FormattedMessage id='about.kmyblue_capability' defaultMessage='Server unique features are configured as follows.' /></p>
+            <p><FormattedMessage id='about.kmyblue_capability' defaultMessage='This server is using kmyblue, a fork of Mastodon. On this server, kmyblues unique features are configured as follows.' /></p>
             {!isLoading && (
               <ol className='rules-list'>
                 <li>
