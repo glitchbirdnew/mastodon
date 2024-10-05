@@ -9,7 +9,7 @@ class Settings::ExportsController < Settings::BaseController
   skip_before_action :require_functional!
 
   def show
-    @export_summary = ExportSummary.new(preloaded_account)
+    @export  = Export.new(current_account)
     @backups = current_user.backups
   end
 
@@ -24,16 +24,5 @@ class Settings::ExportsController < Settings::BaseController
     BackupWorker.perform_async(backup.id)
 
     redirect_to settings_export_path
-  end
-
-  private
-
-  def preloaded_account
-    current_account.tap do |account|
-      ActiveRecord::Associations::Preloader.new(
-        records: [account],
-        associations: :account_stat
-      ).call
-    end
   end
 end

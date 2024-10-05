@@ -21,7 +21,6 @@ import {
   unmountNotifications,
   refreshStaleNotificationGroups,
   pollRecentNotifications,
-  shouldGroupNotificationType,
 } from 'mastodon/actions/notification_groups';
 import {
   disconnectTimeline,
@@ -206,13 +205,6 @@ function processNewNotification(
   groups: NotificationGroupsState['groups'],
   notification: ApiNotificationJSON,
 ) {
-  if (!shouldGroupNotificationType(notification.type)) {
-    notification = {
-      ...notification,
-      group_key: `ungrouped-${notification.id}`,
-    };
-  }
-
   const existingGroupIndex = groups.findIndex(
     (group) =>
       group.type !== 'gap' && group.group_key === notification.group_key,
@@ -285,7 +277,7 @@ function processNewNotification(
       groups.unshift(existingGroup);
     }
   } else {
-    // We have not found an existing group, create a new one
+    // Create a new group
     groups.unshift(createNotificationGroupFromNotificationJSON(notification));
   }
 }

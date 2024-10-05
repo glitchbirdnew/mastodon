@@ -7,7 +7,7 @@ module Mastodon
     module_function
 
     def kmyblue_major
-      16
+      15
     end
 
     def kmyblue_minor
@@ -25,7 +25,7 @@ module Mastodon
     end
 
     def minor
-      4
+      3
     end
 
     def patch
@@ -33,7 +33,7 @@ module Mastodon
     end
 
     def default_prerelease
-      'alpha.1'
+      'rc.1'
     end
 
     def prerelease

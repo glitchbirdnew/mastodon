@@ -21,7 +21,7 @@ class Sanitize
       gemini
     ).freeze
 
-    ALLOWED_CLASS_TRANSFORMER = lambda do |env|
+    CLASS_WHITELIST_TRANSFORMER = lambda do |env|
       node = env[:node]
       class_list = node['class']&.split(/[\t\n\f\r ]/)
 
@@ -107,7 +107,7 @@ class Sanitize
       protocols: {},
 
       transformers: [
-        ALLOWED_CLASS_TRANSFORMER,
+        CLASS_WHITELIST_TRANSFORMER,
         TRANSLATE_TRANSFORMER,
         UNSUPPORTED_ELEMENTS_TRANSFORMER,
         UNSUPPORTED_HREF_TRANSFORMER,

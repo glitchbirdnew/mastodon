@@ -74,10 +74,6 @@ const supportedGroupedNotificationTypes = [
   'emoji_reaction',
 ];
 
-export function shouldGroupNotificationType(type: string) {
-  return supportedGroupedNotificationTypes.includes(type);
-}
-
 export const fetchNotifications = createDataLoadingThunk(
   'notificationGroups/fetch',
   async (_params, { getState }) =>
