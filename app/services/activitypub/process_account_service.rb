@@ -279,7 +279,7 @@ class ActivityPub::ProcessAccountService < BaseService
   def audience_searchable_by
     return nil if @json['searchableBy'].nil?
 
-    @audience_searchable_by_processaccountservice = as_array(@json['searchableBy']).map { |x| value_or_id(x) }.compact_blank
+    @audience_searchable_by_processaccountservice = as_array(@json['searchableBy']).map { |x| value_or_id(x) }
   end
 
   def searchability_from_audience
@@ -290,16 +290,14 @@ class ActivityPub::ProcessAccountService < BaseService
       return invalid_subscription_software? ? misskey_searchability_from_indexable : :direct
     end
 
-    return :limited if audience_searchable_by.include?('kmyblue:Limited') || audience_searchable_by.include?('as:Limited')
-
     if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
       :private
-    elsif audience_searchable_by.include?(@account.uri) || audience_searchable_by.include?(@account.url)
-      :direct
-    else
+    elsif audience_searchable_by.include?('kmyblue:Limited') || audience_searchable_by.include?('as:Limited')
       :limited
+    else
+      :direct
     end
   end
 

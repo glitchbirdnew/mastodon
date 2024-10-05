@@ -11,6 +11,7 @@ import Toggle from 'react-toggle';
 
 import SettingToggle from '../../notifications/components/setting_toggle';
 
+const MAX_NUMBER_OF_TAGS = 10;
 const messages = defineMessages({
   placeholder: { id: 'hashtag.column_settings.select.placeholder', defaultMessage: 'Enter hashtags…' },
   noOptions: { id: 'hashtag.column_settings.select.no_options_message', defaultMessage: 'No suggestions found' },
@@ -48,7 +49,7 @@ class ColumnSettings extends PureComponent {
 
     // Prevent changes that add more than 4 tags, but allow removing
     // tags that were already added before
-    if ((value.length > 4) && !(value < oldValue)) {
+    if ((value.length > MAX_NUMBER_OF_TAGS) && !(value < oldValue)) {
       return;
     }
 

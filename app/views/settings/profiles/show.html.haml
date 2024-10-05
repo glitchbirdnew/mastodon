@@ -17,7 +17,7 @@
         = f.input :display_name, wrapper: :with_block_label, input_html: { maxlength: 30, data: { default: @account.username } }
 
       .fields-group
-        = f.input :note, wrapper: :with_block_label, input_html: { maxlength: Account::NOTE_LENGTH_LIMIT, rows: 8 }
+        = f.input :note, wrapper: :with_block_label, input_html: { maxlength: 1200, rows: 8 }
 
       = f.simple_fields_for :settings, current_user.settings do |ff|
         .fields-group
