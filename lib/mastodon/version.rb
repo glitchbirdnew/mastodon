@@ -7,7 +7,7 @@ module Mastodon
     module_function
 
     def kmyblue_major
-      15
+      16
     end
 
     def kmyblue_minor
@@ -25,7 +25,7 @@ module Mastodon
     end
 
     def minor
-      3
+      4
     end
 
     def patch
@@ -33,7 +33,7 @@ module Mastodon
     end
 
     def default_prerelease
-      'beta.2'
+      'alpha.1'
     end
 
     def prerelease
@@ -58,7 +58,7 @@ module Mastodon
     end
 
     def build_metadata
-      ['bar', to_s_of_kmyblue, build_metadata_of_mastodon].compact.join('.')
+      ['kmyblue', to_s_of_kmyblue, build_metadata_of_mastodon].compact.join('.')
     end
 
     def build_metadata_of_mastodon
