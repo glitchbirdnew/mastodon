@@ -7,7 +7,10 @@ RSpec.describe 'Invites' do
 
   let(:user) { Fabricate :user }
 
-  before { sign_in user }
+  before do
+    UserRole.everyone.update(permissions: UserRole::FLAGS[:invite_users])
+    sign_in user
+  end
 
   describe 'Viewing invites' do
     it 'Lists existing user invites' do

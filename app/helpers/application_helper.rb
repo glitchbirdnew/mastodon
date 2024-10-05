@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  include RegistrationLimitationHelper
+
   RTL_LOCALES = %i(
     ar
     ckb
@@ -23,11 +25,11 @@ module ApplicationHelper
   end
 
   def open_registrations?
-    Setting.registrations_mode == 'open'
+    Setting.registrations_mode == 'open' && registrations_in_time?
   end
 
   def approved_registrations?
-    Setting.registrations_mode == 'approved'
+    Setting.registrations_mode == 'approved' || (Setting.registrations_mode == 'open' && !registrations_in_time?)
   end
 
   def closed_registrations?
@@ -125,6 +127,10 @@ module ApplicationHelper
       material_symbol('globe', title: I18n.t('statuses.visibilities.public'))
     elsif status.unlisted_visibility?
       material_symbol('lock_open', title: I18n.t('statuses.visibilities.unlisted'))
+    elsif status.public_unlisted_visibility?
+      material_symbol('cloud', title: I18n.t('statuses.visibilities.public_unlisted'))
+    elsif status.login_visibility?
+      material_symbol('key', title: I18n.t('statuses.visibilities.login'))
     elsif status.private_visibility? || status.limited_visibility?
       material_symbol('lock', title: I18n.t('statuses.visibilities.private'))
     elsif status.direct_visibility?
@@ -161,6 +167,7 @@ module ApplicationHelper
     output << 'system-font' if current_account&.user&.setting_system_font_ui
     output << (current_account&.user&.setting_reduce_motion ? 'reduce-motion' : 'no-reduce-motion')
     output << 'rtl' if locale_direction == 'rtl'
+    output << "content-font-size__#{current_account&.user&.setting_content_font_size}"
     output.compact_blank.join(' ')
   end
 
@@ -191,10 +198,14 @@ module ApplicationHelper
       text: [params[:title], params[:text], params[:url]].compact.join(' '),
     }
 
-    permit_visibilities = %w(public unlisted private direct)
-    default_privacy     = current_account&.user&.setting_default_privacy
+    permit_visibilities = %w(public unlisted public_unlisted login private direct)
+    permit_searchabilities = %w(public unlisted public_unlisted login private direct)
+    default_privacy = current_account&.user&.setting_default_privacy
     permit_visibilities.shift(permit_visibilities.index(default_privacy) + 1) if default_privacy.present?
     state_params[:visibility] = params[:visibility] if permit_visibilities.include? params[:visibility]
+    default_searchability = current_account&.user&.setting_default_searchability
+    permit_searchabilities.shift(permit_searchabilities.index(default_privacy) + 1) if default_searchability.present?
+    state_params[:searchability] = params[:searchability] if permit_searchabilities.include? params[:searchability]
 
     if user_signed_in? && current_user.functional?
       state_params[:settings]          = state_params[:settings].merge(Web::Setting.find_by(user: current_user)&.data || {})
@@ -238,6 +249,18 @@ module ApplicationHelper
 
   def mascot_url
     full_asset_url(instance_presenter.mascot&.file&.url || frontend_asset_path('images/elephant_ui_plane.svg'))
+  end
+
+  def user_custom_css?
+    return false if current_account&.user.nil?
+
+    current_account.user.setting_use_custom_css && current_account.user.custom_css_text.present?
+  end
+
+  def user_custom_css_version
+    return '0' if current_account&.user&.custom_css.nil?
+
+    current_account&.user&.custom_css&.updated_at.to_s
   end
 
   def copyable_input(options = {})
